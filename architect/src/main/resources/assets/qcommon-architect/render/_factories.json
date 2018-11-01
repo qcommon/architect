@@ -1,0 +1,18 @@
+{
+  "transforms": {
+    "minecraft:translate": "therealfarfetchd.qcommon.architect.factories.impl.transform.FactoryTranslate",
+    "minecraft:rotate": "therealfarfetchd.qcommon.architect.factories.impl.transform.FactoryRotate",
+    "minecraft:scale": "therealfarfetchd.qcommon.architect.factories.impl.transform.FactoryScale",
+    "minecraft:matrix": "therealfarfetchd.qcommon.architect.factories.impl.transform.FactoryMatrix",
+    "minecraft:identity": "therealfarfetchd.qcommon.architect.factories.impl.transform.FactoryIdentity"
+  },
+  "parts": {
+    "minecraft:empty": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryEmpty",
+    "minecraft:box": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryBox",
+    "minecraft:text": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryText"
+  },
+  "models": {
+    "minecraft:default": "therealfarfetchd.qcommon.architect.factories.impl.model.FactoryModelDefault",
+    "minecraft:empty": "therealfarfetchd.qcommon.architect.factories.impl.model.FactoryModelEmpty"
+  }
+}
