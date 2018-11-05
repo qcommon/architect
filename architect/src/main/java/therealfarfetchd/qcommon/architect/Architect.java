@@ -30,7 +30,7 @@ public class Architect {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
         proxy.preInit(e);
-        Model m = ModelLoader.INSTANCE.load(new ResourceLocation("qcommon-architect", "render/block/testblock.json"));
+        Model m = ModelLoader.INSTANCE.load(new ResourceLocation("qcommon-architect", "render/block/obsidian.json"));
     }
 
 }

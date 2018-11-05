@@ -1,45 +1,103 @@
 package therealfarfetchd.qcommon.architect.client;
 
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.SimpleBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import therealfarfetchd.qcommon.architect.Architect;
+import therealfarfetchd.qcommon.architect.model.Face;
 import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.model.Quad;
+import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
+import therealfarfetchd.qcommon.architect.model.value.StateProvider;
+import therealfarfetchd.qcommon.croco.Vec3;
 
 public class BlockModel implements IModel {
 
+    private final StateProvider sp;
     private final Model model;
 
-    public BlockModel(Model model) {
+    public BlockModel(StateProvider sp, Model model) {
+        this.sp = sp;
         this.model = model;
     }
 
     @Override
     public Collection<ResourceLocation> getTextures() {
-        return Collections.singletonList(new ResourceLocation(Architect.MODID, "pablo")); // TODO
+        return model.getParts().getPossibleValues().parallelStream()
+            .flatMap(Collection::parallelStream)
+            .flatMap($ -> $.getFaces().getPossibleValues().parallelStream().flatMap(Collection::parallelStream))
+            .map(Face::getTexture)
+            .map($ -> $.getTexture(unused -> TextureRef.PLACEHOLDER.texture))
+            .collect(Collectors.toSet());
     }
 
     @Override
     public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-        List<Quad> quadList = model.getParts().stream()
-            .flatMap($ -> $.getFaces().stream())
-            .flatMap($ -> $.toQuads().stream())
+        Function<TextureRef, TextureAtlasSprite> mapper = tr -> bakedTextureGetter.apply(tr.getTexture(unused -> TextureRef.PLACEHOLDER.texture));
+
+        List<Quad> quadList = model.getParts().get(sp).parallelStream()
+            .flatMap($ -> $.getFaces().get(sp).parallelStream())
+            .flatMap($ -> $.toQuads().parallelStream())
             .collect(Collectors.toList());
 
-        return null;
+        Map<EnumFacing, List<BakedQuad>> em = categorizeAndBake(quadList, quad -> QuadFactory.INSTANCE.bake(format, mapper, quad).get(0));
+
+        SimpleBakedModel b = new SimpleBakedModel(em.get(null), em, true, true, bakedTextureGetter.apply(TextureRef.PLACEHOLDER.texture), ItemCameraTransforms.DEFAULT, ItemOverrideList.NONE);
+
+        return b;
     }
 
+    private Map<EnumFacing, List<BakedQuad>> categorizeAndBake(List<Quad> quads, Function<Quad, BakedQuad> bake) {
+        Map<EnumFacing, List<BakedQuad>> l = new HashMap<>();
 
+        for (EnumFacing f : EnumFacing.VALUES) l.put(f, new ArrayList<>());
+        l.put(null, new ArrayList<>());
+
+        for (Quad q : quads) {
+            BakedQuad baked = bake.apply(q);
+
+            boolean isCullable = true;
+            EnumFacing f = q.getFacing();
+            Vec3 direction = Vec3.from(f.getDirectionVec());
+            Vec3 filter = direction.mul(direction);
+            Vec3 cmp = direction.add(filter).div(2);
+
+            // check if the normal is the same as the facing direction
+            if (!direction.equals(q.getNormal())) isCullable = false;
+
+            // check if all vertices are inside the block
+            if (isCullable && (q.v0.xyz.x < 0 || q.v0.xyz.x > 1 || q.v0.xyz.y < 0 || q.v0.xyz.y > 1 || q.v0.xyz.z < 0 || q.v0.xyz.z > 1)) isCullable = false;
+            if (isCullable && (q.v1.xyz.x < 0 || q.v1.xyz.x > 1 || q.v1.xyz.y < 0 || q.v1.xyz.y > 1 || q.v1.xyz.z < 0 || q.v1.xyz.z > 1)) isCullable = false;
+            if (isCullable && (q.v2.xyz.x < 0 || q.v2.xyz.x > 1 || q.v2.xyz.y < 0 || q.v2.xyz.y > 1 || q.v2.xyz.z < 0 || q.v2.xyz.z > 1)) isCullable = false;
+            if (isCullable && (q.v3.xyz.x < 0 || q.v3.xyz.x > 1 || q.v3.xyz.y < 0 || q.v3.xyz.y > 1 || q.v3.xyz.z < 0 || q.v3.xyz.z > 1)) isCullable = false;
+
+            // check if all vertices are on the right face of the block
+            if (isCullable && !filter.mul(q.v0.xyz).equals(cmp)) isCullable = false;
+            if (isCullable && !filter.mul(q.v1.xyz).equals(cmp)) isCullable = false;
+            if (isCullable && !filter.mul(q.v2.xyz).equals(cmp)) isCullable = false;
+            if (isCullable && !filter.mul(q.v3.xyz).equals(cmp)) isCullable = false;
+
+            if (isCullable) l.get(f).add(baked);
+            else l.get(null).add(baked);
+        }
+
+        return l;
+    }
 
 }

@@ -17,7 +17,7 @@ public class ModelLoader extends GenLoader<Model> {
     public Model load(ParseContext ctx, String fileName, JsonObject json) {
         ResourceLocation rl = new ResourceLocation("minecraft", "default");
         if (json.has("type")) {
-            rl = JsonParserUtils.parseGenString(ctx, json, "type", "a model type", s -> true, ResourceLocation::new, rl);
+            rl = JsonParserUtils.parseGenStringStatic(ctx, json, "type", "a model type", s -> true, ResourceLocation::new, rl);
         }
 
         ModelFactory mf = FactoryRegistry.INSTANCE.getModelFactory(rl);

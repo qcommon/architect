@@ -1,11 +1,20 @@
 package therealfarfetchd.qcommon.architect.model;
 
+import net.minecraft.util.EnumFacing;
+
 import java.util.List;
 
-import therealfarfetchd.qcommon.architect.math.Mat4;
-import therealfarfetchd.qcommon.architect.math.Vec3;
+import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
+import therealfarfetchd.qcommon.croco.Mat4;
+import therealfarfetchd.qcommon.croco.Vec3;
 
 public interface Face {
+
+    TextureRef getTexture();
+
+    Vec3 getNormal();
+
+    EnumFacing getFacing();
 
     List<Quad> toQuads();
 

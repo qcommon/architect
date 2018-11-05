@@ -14,6 +14,7 @@ import java.util.Map;
 import therealfarfetchd.qcommon.architect.Architect;
 import therealfarfetchd.qcommon.architect.loader.ModelLoader;
 import therealfarfetchd.qcommon.architect.model.Model;
+import therealfarfetchd.qcommon.architect.model.value.VariantStateProvider;
 
 public class BlockModelLoader implements ICustomModelLoader {
 
@@ -32,7 +33,7 @@ public class BlockModelLoader implements ICustomModelLoader {
 
         boolean fileExists = false;
         try (InputStream ignored = Architect.proxy.openResource(model, true)) {
-            fileExists = true;
+            if (ignored != null) fileExists = true;
         } catch (IOException ignored) { }
 
         return fileExists;
@@ -41,10 +42,16 @@ public class BlockModelLoader implements ICustomModelLoader {
     @Override
     public IModel loadModel(ResourceLocation modelLocation) {
         ResourceLocation model = new ResourceLocation(modelLocation.getNamespace(), String.format("render/block/%s.json", modelLocation.getPath()));
+        VariantStateProvider vsp = new VariantStateProvider(((ModelResourceLocation) modelLocation).getVariant());
 
         Model m = models.computeIfAbsent(model, ModelLoader.INSTANCE::load);
 
-        return new BlockModel(m);
+        if (m == null) {
+            // TODO return error model
+            throw new IllegalStateException("Failed to parse model");
+        }
+
+        return new BlockModel(vsp, m);
     }
 
     @Override

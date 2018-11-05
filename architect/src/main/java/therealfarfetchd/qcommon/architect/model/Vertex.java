@@ -1,8 +1,8 @@
 package therealfarfetchd.qcommon.architect.model;
 
-import therealfarfetchd.qcommon.architect.math.Mat4;
-import therealfarfetchd.qcommon.architect.math.Vec2;
-import therealfarfetchd.qcommon.architect.math.Vec3;
+import therealfarfetchd.qcommon.croco.Mat4;
+import therealfarfetchd.qcommon.croco.Vec2;
+import therealfarfetchd.qcommon.croco.Vec3;
 
 public class Vertex {
 

@@ -11,16 +11,17 @@ import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.model.Part;
+import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public class FactoryModelDefault implements ModelFactory {
 
     @Override
     public Model parse(ParseContext ctx, JsonObject json) {
-        List<Part> parts = new ArrayList<>();
+        List<Value<Part>> parts = new ArrayList<>();
 
         if (json.has("parts")) {
-            JsonParserUtils.parseGenObjectArray(ctx, json, "parts", "part", -1, $ -> true,
-                l -> l.stream().map(jo -> JsonParserUtils.parsePart(ctx, jo)), Stream.<Part>empty()).forEach(parts::add);
+            JsonParserUtils.parseGenObjectArrayStatic(ctx, json, "parts", "part", -1, $ -> true,
+                l -> l.stream().map(jo -> JsonParserUtils.parsePart(ctx, jo)), Stream.<Value<Part>>empty()).forEach(parts::add);
         }
 
         return new DefaultModel(parts);

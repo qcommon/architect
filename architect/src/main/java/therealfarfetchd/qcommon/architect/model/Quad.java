@@ -1,11 +1,14 @@
 package therealfarfetchd.qcommon.architect.model;
 
+import net.minecraft.util.EnumFacing;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import therealfarfetchd.qcommon.architect.math.Mat4;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
+import therealfarfetchd.qcommon.croco.Mat4;
+import therealfarfetchd.qcommon.croco.Vec3;
 
 public class Quad implements Face {
 
@@ -17,6 +20,8 @@ public class Quad implements Face {
 
     private List<Quad> quads;
     private List<Tri> tris;
+    private Vec3 normal;
+    private EnumFacing facing;
 
     public Quad(TextureRef texture, Vertex v0, Vertex v1, Vertex v2, Vertex v3) {
         this.texture = texture;
@@ -24,6 +29,29 @@ public class Quad implements Face {
         this.v1 = v1;
         this.v2 = v2;
         this.v3 = v3;
+    }
+
+    @Override
+    public TextureRef getTexture() {
+        return texture;
+    }
+
+    @Override
+    public Vec3 getNormal() {
+        if (normal == null) {
+            normal = toTris().get(0).getNormal();
+        }
+
+        return normal;
+    }
+
+    @Override
+    public EnumFacing getFacing() {
+        if (facing == null) {
+            facing = toTris().get(0).getFacing();
+        }
+
+        return facing;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package therealfarfetchd.qcommon.architect.math;
+package therealfarfetchd.qcommon.croco;
 
 import java.util.Objects;
 
@@ -8,6 +8,9 @@ public final class Vec2 {
 
     public final float x;
     public final float y;
+
+    private float length = Float.NaN;
+    private Vec2 normalized;
 
     public Vec2(float x, float y) {
         this.x = x;
@@ -26,12 +29,37 @@ public final class Vec2 {
         return new Vec2(this.x * other.x, this.y * other.y);
     }
 
+    public Vec2 mul(float other) {
+        return new Vec2(this.x * other, this.y * other);
+    }
+
     public Vec2 div(Vec2 other) {
         return new Vec2(x / other.x, this.y / other.y);
     }
 
+    public Vec2 div(float other) {
+        return new Vec2(this.x / other, this.y / other);
+    }
+
     public float dot(Vec2 other) {
         return this.x * other.x + this.y * other.y;
+    }
+
+    public float getLength() {
+        if (Float.isNaN(length)) {
+            length = (float) Math.sqrt(x * x + y * y);
+        }
+
+        return length;
+    }
+
+    public Vec2 getNormalized() {
+        if (normalized == null) {
+            normalized = new Vec2(x / getLength(), y / getLength());
+            normalized.length = 1;
+        }
+
+        return normalized;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package therealfarfetchd.qcommon.architect.math;
+package therealfarfetchd.qcommon.croco;
 
 import java.util.Objects;
 

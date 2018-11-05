@@ -1,9 +1,6 @@
-/**
- * TODO: move vecmath stuff to own qcommon module (qcommon-croco)
- */
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package therealfarfetchd.qcommon.architect.math;
+package therealfarfetchd.qcommon.architect.model.texref;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

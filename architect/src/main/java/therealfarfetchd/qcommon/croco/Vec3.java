@@ -1,4 +1,7 @@
-package therealfarfetchd.qcommon.architect.math;
+package therealfarfetchd.qcommon.croco;
+
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.Objects;
 
@@ -31,8 +34,16 @@ public final class Vec3 {
         return new Vec3(this.x * other.x, this.y * other.y, this.z * other.z);
     }
 
+    public Vec3 mul(float other) {
+        return new Vec3(this.x * other, this.y * other, this.z * other);
+    }
+
     public Vec3 div(Vec3 other) {
         return new Vec3(x / other.x, this.y / other.y, this.z / other.z);
+    }
+
+    public Vec3 div(float other) {
+        return new Vec3(x / other, this.y / other, this.z / other);
     }
 
     public float dot(Vec3 other) {
@@ -63,6 +74,10 @@ public final class Vec3 {
         return normalized;
     }
 
+    public Vec3d toVec3d() {
+        return new Vec3d(x, y, z);
+    }
+
     public Vec4 toVec4() {
         return new Vec4(x, y, z, 1);
     }
@@ -85,6 +100,10 @@ public final class Vec3 {
     @Override
     public String toString() {
         return String.format("(%f, %f, %f)", x, y, z);
+    }
+
+    public static Vec3 from(Vec3i vec) {
+        return new Vec3(vec.getX(), vec.getY(), vec.getZ());
     }
 
 }

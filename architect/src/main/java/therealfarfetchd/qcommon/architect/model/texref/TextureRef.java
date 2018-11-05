@@ -6,7 +6,7 @@ import therealfarfetchd.qcommon.architect.Architect;
 
 public interface TextureRef {
 
-    TextureRef PLACEHOLDER = new TextureRefAbsolute(new ResourceLocation(Architect.MODID, "pablo"));
+    TextureRefAbsolute PLACEHOLDER = new TextureRefAbsolute(new ResourceLocation(Architect.MODID, "pablo"));
 
     ResourceLocation getTexture(TextureMapper tm);
 

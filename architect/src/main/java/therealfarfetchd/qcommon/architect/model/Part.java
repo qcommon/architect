@@ -1,11 +1,11 @@
 package therealfarfetchd.qcommon.architect.model;
 
-import net.minecraft.util.ResourceLocation;
-
 import java.util.List;
+
+import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public interface Part {
 
-    List<Face> getFaces();
+    Value<List<Face>> getFaces();
 
 }
