@@ -47,10 +47,10 @@ public final class Vec4 {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vec4 vec4 = (Vec4) o;
-        return Float.compare(vec4.x, x) == 0 &&
-            Float.compare(vec4.y, y) == 0 &&
-            Float.compare(vec4.z, z) == 0 &&
-            Float.compare(vec4.w, w) == 0;
+        return vec4.x == x &&
+            vec4.y == y &&
+            vec4.z == z &&
+            vec4.w == w;
     }
 
     @Override

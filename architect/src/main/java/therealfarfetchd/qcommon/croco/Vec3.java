@@ -87,9 +87,9 @@ public final class Vec3 {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vec3 vec3 = (Vec3) o;
-        return Float.compare(vec3.x, x) == 0 &&
-            Float.compare(vec3.y, y) == 0 &&
-            Float.compare(vec3.z, z) == 0;
+        return vec3.x == x &&
+            vec3.y == y &&
+            vec3.z == z;
     }
 
     @Override

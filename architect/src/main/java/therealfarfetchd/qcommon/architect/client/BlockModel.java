@@ -27,6 +27,8 @@ import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.value.StateProvider;
 import therealfarfetchd.qcommon.croco.Vec3;
 
+import static java.lang.Math.round;
+
 public class BlockModel implements IModel {
 
     private final StateProvider sp;
@@ -61,6 +63,19 @@ public class BlockModel implements IModel {
         SimpleBakedModel b = new SimpleBakedModel(em.get(null), em, true, true, bakedTextureGetter.apply(TextureRef.PLACEHOLDER.texture), ItemCameraTransforms.DEFAULT, ItemOverrideList.NONE);
 
         return b;
+    }
+
+    private Quad snapToGrid(Quad q) {
+        return new Quad(q.texture, q.v0.withXYZ(snapToGrid(q.v0.xyz)), q.v1.withXYZ(snapToGrid(q.v1.xyz)), q.v2.withXYZ(snapToGrid(q.v2.xyz)), q.v3.withXYZ(snapToGrid(q.v3.xyz)));
+    }
+
+    private Vec3 snapToGrid(Vec3 v) {
+        float gridSize = 256;
+        return new Vec3(
+            round(v.x * gridSize) / gridSize,
+            round(v.y * gridSize) / gridSize,
+            round(v.z * gridSize) / gridSize
+        );
     }
 
     private Map<EnumFacing, List<BakedQuad>> categorizeAndBake(List<Quad> quads, Function<Quad, BakedQuad> bake) {

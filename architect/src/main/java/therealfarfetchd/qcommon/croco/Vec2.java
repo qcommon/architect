@@ -67,8 +67,8 @@ public final class Vec2 {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vec2 vec2 = (Vec2) o;
-        return Float.compare(vec2.x, x) == 0 &&
-            Float.compare(vec2.y, y) == 0;
+        return vec2.x == x &&
+            vec2.y == y;
     }
 
     @Override
