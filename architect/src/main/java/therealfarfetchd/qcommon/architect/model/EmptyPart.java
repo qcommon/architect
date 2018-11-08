@@ -11,8 +11,8 @@ public class EmptyPart implements Part {
     public static final EmptyPart INSTANCE = new EmptyPart();
 
     @Override
-    public Value<List<Face>> getFaces() {
-        return Value.wrap(Collections.emptyList());
+    public List<Face> getFaces() {
+        return Collections.emptyList();
     }
 
 }

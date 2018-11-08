@@ -25,11 +25,11 @@ public class FactoryBox implements PartFactory {
     @Override
     public Value<Part> parse(ParseContext ctx, JsonObject json) {
         EnumMap<EnumFacing, Value<BoxFace>> em = INITIAL_TEXTURES.clone();
-        Vec3 from = FROM;
-        Vec3 to = TO;
+        Value<Vec3> from = Value.wrap(FROM);
+        Value<Vec3> to = Value.wrap(TO);
 
-        if (json.has("from")) from = JsonParserUtils.parseVec3Static(ctx, json, "from", from);
-        if (json.has("to")) to = JsonParserUtils.parseVec3Static(ctx, json, "to", to);
+        if (json.has("from")) from = JsonParserUtils.parseVec3(ctx, json, "from", FROM);
+        if (json.has("to")) to = JsonParserUtils.parseVec3(ctx, json, "to", TO);
 
         if (json.has("faces")) {
             JsonObject jo = JsonParserUtils.parseGenObjectStatic(ctx, json, "faces", "an object", $ -> true, $ -> $, new JsonObject());
@@ -40,7 +40,10 @@ public class FactoryBox implements PartFactory {
             }
         }
 
-        return Value.wrap(new PartBox(em, from, to));
+        Value<Vec3> finalFrom = from;
+        Value<Vec3> finalTo = to;
+
+        return Value.extract(em).flatMap(em1 -> finalFrom.flatMap(from1 -> finalTo.map(to1 -> new PartBox(em1, from1, to1))));
     }
 
     private Value<BoxFace> apply(ParseContext ctx, Value<BoxFace> current, JsonObject json, String key) {

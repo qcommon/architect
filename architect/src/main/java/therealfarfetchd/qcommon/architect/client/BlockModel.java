@@ -43,7 +43,7 @@ public class BlockModel implements IModel {
     public Collection<ResourceLocation> getTextures() {
         return model.getParts().getPossibleValues().parallelStream()
             .flatMap(Collection::parallelStream)
-            .flatMap($ -> $.getFaces().getPossibleValues().parallelStream().flatMap(Collection::parallelStream))
+            .flatMap($ -> $.getFaces().parallelStream())
             .map(Face::getTexture)
             .map($ -> $.getTexture(unused -> TextureRef.PLACEHOLDER.texture))
             .collect(Collectors.toSet());
@@ -54,7 +54,7 @@ public class BlockModel implements IModel {
         Function<TextureRef, TextureAtlasSprite> mapper = tr -> bakedTextureGetter.apply(tr.getTexture(unused -> TextureRef.PLACEHOLDER.texture));
 
         List<Quad> quadList = model.getParts().get(sp).parallelStream()
-            .flatMap($ -> $.getFaces().get(sp).parallelStream())
+            .flatMap($ -> $.getFaces().parallelStream())
             .flatMap($ -> $.toQuads().parallelStream())
             .collect(Collectors.toList());
 

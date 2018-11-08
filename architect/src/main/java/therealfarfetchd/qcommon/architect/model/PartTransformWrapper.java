@@ -3,7 +3,6 @@ package therealfarfetchd.qcommon.architect.model;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import therealfarfetchd.qcommon.architect.model.value.Value;
 import therealfarfetchd.qcommon.croco.Vec3;
 
 public class PartTransformWrapper implements Part {
@@ -17,8 +16,8 @@ public class PartTransformWrapper implements Part {
     }
 
     @Override
-    public Value<List<Face>> getFaces() {
-        return wrapped.getFaces().map($ -> $.parallelStream().map(this::transform).collect(Collectors.toList()));
+    public List<Face> getFaces() {
+        return wrapped.getFaces().parallelStream().map(this::transform).collect(Collectors.toList());
     }
 
     private Face transform(Face f) {
