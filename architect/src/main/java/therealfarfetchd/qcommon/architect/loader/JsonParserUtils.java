@@ -24,9 +24,8 @@ import therealfarfetchd.qcommon.architect.factories.FactoryRegistry;
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
 import therealfarfetchd.qcommon.architect.factories.TransformFactory;
 import therealfarfetchd.qcommon.architect.factories.impl.transform.FactoryIdentity;
-import therealfarfetchd.qcommon.architect.model.EmptyPart;
-import therealfarfetchd.qcommon.architect.model.Part;
-import therealfarfetchd.qcommon.architect.model.PartTransformWrapper;
+import therealfarfetchd.qcommon.architect.model.part.Part;
+import therealfarfetchd.qcommon.architect.model.part.PartTransformWrapper;
 import therealfarfetchd.qcommon.architect.model.Transform;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRefAbsolute;
@@ -153,14 +152,14 @@ public class JsonParserUtils {
     }
 
     public static Value<Part> parsePart(ParseContext ctx, JsonObject root, String tag) {
-        return parseGenObjectStatic(ctx, root, tag, "a part", $ -> true, obj -> parsePart(ctx, obj), Value.wrap(EmptyPart.INSTANCE));
+        return parseGenObjectStatic(ctx, root, tag, "a part", $ -> true, obj -> parsePart(ctx, obj), Value.wrap(Part.EMPTY));
     }
 
     public static Value<Part> parsePart(ParseContext ctx, JsonObject root) {
         PartFactory pf = parseGenStringStatic(ctx, root, "type", "a part type",
             s -> FactoryRegistry.INSTANCE.getPartFactory(new ResourceLocation(s)) != null,
             s -> FactoryRegistry.INSTANCE.getPartFactory(new ResourceLocation(s)),
-            (p1, p2) -> Value.wrap(EmptyPart.INSTANCE));
+            (p1, p2) -> Value.wrap(Part.EMPTY));
 
         final Value<Part> part = pf.parse(ctx, root);
 

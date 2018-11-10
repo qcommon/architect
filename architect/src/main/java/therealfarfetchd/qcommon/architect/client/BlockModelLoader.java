@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import therealfarfetchd.qcommon.architect.Architect;
 import therealfarfetchd.qcommon.architect.loader.ModelLoader;
 import therealfarfetchd.qcommon.architect.model.Model;
@@ -55,7 +57,7 @@ public class BlockModelLoader implements ICustomModelLoader {
     }
 
     @Override
-    public void onResourceManagerReload(IResourceManager resourceManager) {
+    public void onResourceManagerReload(@Nonnull IResourceManager resourceManager) {
         models.clear();
     }
 

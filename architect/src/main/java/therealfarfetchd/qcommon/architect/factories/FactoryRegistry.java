@@ -15,7 +15,7 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
 import therealfarfetchd.qcommon.architect.Architect;
-import therealfarfetchd.qcommon.architect.loader.GenLoader;
+import therealfarfetchd.qcommon.architect.loader.ModelLoader;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 
 public class FactoryRegistry {
@@ -80,7 +80,7 @@ public class FactoryRegistry {
     private void readFactoryDefinitions(String modid) {
         ResourceLocation rl = new ResourceLocation(modid, "render/_factories.json");
         ParseContext ctx = new ParseContext(String.format("'%s' factories", modid));
-        JsonObject obj = GenLoader.loadJsonObject(ctx, rl);
+        JsonObject obj = ModelLoader.INSTANCE.loadSource(ctx, rl);
         if (ctx.isResultValid()) {
             assert obj != null;
             readFactoryDefinitions(ctx, modid, obj);

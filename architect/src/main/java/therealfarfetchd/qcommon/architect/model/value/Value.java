@@ -23,6 +23,10 @@ public interface Value<T> {
         return getPossibleValues().size() == 1;
     }
 
+    default Value<T> asCached() {
+        return this;
+    }
+
     static <T> Value<T> wrap(T t) {
         return new ConstantValue<>(t);
     }

@@ -1,8 +1,10 @@
-package therealfarfetchd.qcommon.architect.model;
+package therealfarfetchd.qcommon.architect.model.part;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import therealfarfetchd.qcommon.architect.model.Face;
+import therealfarfetchd.qcommon.architect.model.Transform;
 import therealfarfetchd.qcommon.croco.Vec3;
 
 public class PartTransformWrapper implements Part {

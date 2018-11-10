@@ -10,7 +10,7 @@ import therealfarfetchd.qcommon.architect.factories.ModelFactory;
 import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.model.Model;
-import therealfarfetchd.qcommon.architect.model.Part;
+import therealfarfetchd.qcommon.architect.model.part.Part;
 import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public class FactoryModelDefault implements ModelFactory {

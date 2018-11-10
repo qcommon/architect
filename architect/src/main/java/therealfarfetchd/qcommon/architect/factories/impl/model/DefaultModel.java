@@ -3,7 +3,7 @@ package therealfarfetchd.qcommon.architect.factories.impl.model;
 import java.util.List;
 
 import therealfarfetchd.qcommon.architect.model.Model;
-import therealfarfetchd.qcommon.architect.model.Part;
+import therealfarfetchd.qcommon.architect.model.part.Part;
 import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public class DefaultModel implements Model {

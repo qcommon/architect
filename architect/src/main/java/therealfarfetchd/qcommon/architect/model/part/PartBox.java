@@ -1,4 +1,4 @@
-package therealfarfetchd.qcommon.architect.factories.impl.part;
+package therealfarfetchd.qcommon.architect.model.part;
 
 import net.minecraft.util.EnumFacing;
 
@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import therealfarfetchd.qcommon.architect.factories.impl.part.BoxFace;
 import therealfarfetchd.qcommon.architect.model.Face;
-import therealfarfetchd.qcommon.architect.model.Part;
 import therealfarfetchd.qcommon.croco.Vec3;
 
 public class PartBox implements Part {

@@ -32,4 +32,9 @@ public class ConstantValue<T> implements Value<T> {
         return Collections.singleton(value);
     }
 
+    @Override
+    public Value<T> asCached() {
+        return this;
+    }
+
 }

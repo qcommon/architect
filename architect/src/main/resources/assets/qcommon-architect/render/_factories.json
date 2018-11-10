@@ -8,8 +8,10 @@
   },
   "parts": {
     "minecraft:empty": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryEmpty",
+    "minecraft:external": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryExternal",
     "minecraft:box": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryBox",
-    "minecraft:text": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryText"
+    "minecraft:text": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryText",
+    "minecraft:obj": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryOBJ"
   },
   "models": {
     "minecraft:default": "therealfarfetchd.qcommon.architect.factories.impl.model.FactoryModelDefault",

@@ -1,52 +1,31 @@
 package therealfarfetchd.qcommon.architect.loader;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import javax.annotation.Nullable;
 
 import therealfarfetchd.qcommon.architect.Architect;
 
-public abstract class GenLoader<T> {
+public abstract class GenLoader<T, S> {
 
-    // seriously, why is this an object, it has no fields at all and doesn't
-    // implement/extend anything, and is final, why not make the methods static ffs
-    protected static final JsonParser json = new JsonParser();
+    protected GenLoader() { }
 
-    protected GenLoader() {
-        getTypeName();
-    }
-
-    public abstract T load(ParseContext ctx, String fileName, JsonObject json);
+    public abstract T load(ParseContext ctx, SourceFileInfo info, S source);
 
     public T load(ParseContext ctx, ResourceLocation rl) {
-        String filename = getFileName(rl);
+        S source = loadSource(ctx, rl);
 
-        JsonObject obj = loadJsonObject(ctx, rl);
+        if (source == null) return getError();
 
-        if (obj == null) return getError();
-
-        return load(ctx, filename, obj);
-    }
-
-    @Nullable
-    public T load(String fileName, JsonObject json) {
-        ParseContext ctx = new ParseContext(String.format("%s '%s'", getTypeName(), fileName));
-        T m = load(ctx, fileName, json);
-        ctx.printMessages();
-        return ctx.isResultValid() ? m : null;
+        return load(ctx, new SourceFileInfo(rl), source);
     }
 
     @Nullable
     public T load(ResourceLocation rl) {
-        ParseContext ctx = new ParseContext(String.format("%s '%s'", getTypeName(), getFileName(rl)));
+        ParseContext ctx = new ParseContext(String.format("%s '%s'", getTypeName(), SourceFileInfo.getFileName(rl)));
         T m = load(ctx, rl);
         ctx.printMessages();
         return ctx.isResultValid() ? m : null;
@@ -56,35 +35,28 @@ public abstract class GenLoader<T> {
 
     protected abstract String getTypeName();
 
-    public static String getFileName(ResourceLocation rl) {
-        return rl.getPath().substring(rl.getPath().lastIndexOf('/') + 1);
-    }
-
     @Nullable
-    public static JsonObject loadJsonObject(ParseContext ctx, ResourceLocation rl) {
-        JsonObject obj = null;
+    protected S loadSource(ParseContext ctx, ResourceLocation rl) {
+        S source = null;
         try (InputStream istr = Architect.proxy.openResource(rl, true)) {
             if (istr == null) {
                 ctx.error(String.format("Could not open file '%s'", rl));
                 return null;
             }
-            JsonElement el = json.parse(new InputStreamReader(istr));
-            if (el.isJsonObject()) {
-                obj = el.getAsJsonObject();
-            } else {
-                ctx.error("Root tag is not an object");
-                return null;
-            }
+            source = loadSourceFromStream(ctx, istr);
         } catch (IOException e) {
             e.printStackTrace();
-            if (obj == null) {
-                ctx.error("Failed to load JSON file: " + e.getMessage());
+            if (source == null) {
+                ctx.error("Failed to load file: " + e.getMessage());
                 return null;
             } else {
                 ctx.warn(String.format("An exception occurred while loading the file: %s. We got data nonetheless, ignoring.", e.getMessage()));
             }
         }
-        return obj;
+        return source;
     }
+
+    @Nullable
+    protected abstract S loadSourceFromStream(ParseContext ctx, InputStream stream);
 
 }
