@@ -8,3 +8,5 @@ The qcommon project provides a set of libraries that are designed to be packed i
 uhh, idk for now
 
 TODO
+
+[documentation](doc/README.md)
