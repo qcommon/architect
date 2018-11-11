@@ -2,15 +2,15 @@ package therealfarfetchd.qcommon.architect.loader.obj.structs;
 
 import java.util.Objects;
 
-import javax.annotation.Nullable;
-
 public class OBJVertex {
 
     public final int xyz;
-    @Nullable public final Integer tex;
-    @Nullable public final Integer normal;
+    public final int tex;
+    public final int normal;
 
-    public OBJVertex(int xyz, @Nullable Integer tex, @Nullable Integer normal) {
+    public OBJVertex(int xyz, int tex, int normal) {
+        if (xyz == 0) throw new IllegalArgumentException("Vertex needs xyz coordinates!");
+
         this.xyz = xyz;
         this.tex = tex;
         this.normal = normal;
@@ -22,8 +22,8 @@ public class OBJVertex {
         if (o == null || getClass() != o.getClass()) return false;
         OBJVertex objVertex = (OBJVertex) o;
         return xyz == objVertex.xyz &&
-            Objects.equals(tex, objVertex.tex) &&
-            Objects.equals(normal, objVertex.normal);
+            tex == objVertex.tex &&
+            normal == objVertex.normal;
     }
 
     @Override

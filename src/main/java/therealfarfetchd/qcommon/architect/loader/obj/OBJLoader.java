@@ -125,10 +125,10 @@ public class OBJLoader extends OBJLoaderBase<OBJRoot> {
             try {
                 return Integer.parseInt(str);
             } catch (NumberFormatException e) {
-                return null;
+                return 0;
             }
         }).collect(Collectors.toList());
-        return new OBJVertex(Objects.requireNonNull(c.get(0)), c.get(1), c.get(2));
+        return new OBJVertex(c.get(0), c.get(1), c.get(2));
     }
 
 }
