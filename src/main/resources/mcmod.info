@@ -11,18 +11,5 @@
     "logoFile": "",
     "screenshots": [],
     "dependencies": []
-  },
-  {
-    "modid": "qcommon-croco",
-    "name": "Croco",
-    "description": "Vector math library",
-    "version": "${version}",
-    "mcversion": "${mcversion}",
-    "url": "https://github.com/therealfarfetchd/qcommon",
-    "updateUrl": "",
-    "authorList": ["therealfarfetchd"],
-    "logoFile": "",
-    "screenshots": [],
-    "dependencies": []
   }
 ]

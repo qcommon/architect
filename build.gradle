@@ -26,6 +26,7 @@ minecraft {
 }
 
 dependencies {
+  compile files('qcommon-croco-1.0.0.jar') // no maven yet
 }
 
 processResources {
