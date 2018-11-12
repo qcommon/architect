@@ -9,4 +9,4 @@ uhh, idk for now
 
 TODO
 
-[documentation](doc/README.md)
+[documentation](https://github.com/qcommon/architect/wiki)
