@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Function;
 
-public class ConstantValue<T> implements Value<T> {
+public class ConstantValue<T> implements Value<T>, KeyInfo {
 
     private final T value;
 
@@ -34,6 +34,11 @@ public class ConstantValue<T> implements Value<T> {
 
     @Override
     public Value<T> asCached() {
+        return this;
+    }
+
+    @Override
+    public Value<T> pull() {
         return this;
     }
 

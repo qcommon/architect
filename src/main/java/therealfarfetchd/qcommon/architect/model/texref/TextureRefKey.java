@@ -22,6 +22,11 @@ public class TextureRefKey implements TextureRef {
     }
 
     @Override
+    public String toStringRepr() {
+        return String.format("#%s", key);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -36,6 +41,7 @@ public class TextureRefKey implements TextureRef {
 
     @Override
     public String toString() {
-        return "#" + key;
+        return toStringRepr();
     }
+
 }

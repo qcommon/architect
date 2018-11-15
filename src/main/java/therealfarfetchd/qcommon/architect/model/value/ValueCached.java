@@ -29,4 +29,8 @@ public class ValueCached<T> implements Value<T> {
         return this;
     }
 
+    @Override
+    public Value<T> pull() {
+        return wrapped.pull();
+    }
 }

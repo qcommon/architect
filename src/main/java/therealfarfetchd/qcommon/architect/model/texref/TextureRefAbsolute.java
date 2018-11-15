@@ -18,6 +18,11 @@ public class TextureRefAbsolute implements TextureRef {
     }
 
     @Override
+    public String toStringRepr() {
+        return texture.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

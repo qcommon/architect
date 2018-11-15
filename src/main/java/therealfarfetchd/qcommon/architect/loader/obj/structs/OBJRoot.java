@@ -1,6 +1,7 @@
 package therealfarfetchd.qcommon.architect.loader.obj.structs;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -28,6 +29,12 @@ public class OBJRoot {
         this.vertNormal = vertNormal;
         this.faces = faces;
         this.objects = objects;
+    }
+
+    public OBJRoot withMaterial(String name, OBJMaterial mat) {
+        Map<String, OBJMaterial> newMap = new HashMap<>(materials);
+        newMap.put(name, mat);
+        return new OBJRoot(newMap, vertPos, vertTex, vertNormal, faces, objects);
     }
 
     @Override

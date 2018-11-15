@@ -145,10 +145,7 @@ public class JsonParserUtils {
     }
 
     public static Value<TextureRef> parseTextureRef(ParseContext ctx, JsonObject root, String tag, TextureRef fallback) {
-        return parseGenString(ctx, root, tag, "a texture name or #-key", $ -> true, tn -> {
-            if (tn.startsWith("#")) return new TextureRefKey(tn.substring(1));
-            else return new TextureRefAbsolute(new ResourceLocation(tn));
-        }, fallback);
+        return parseGenString(ctx, root, tag, "a texture name or #-key", $ -> true, TextureRef::fromString, fallback);
     }
 
     public static Value<Part> parsePart(ParseContext ctx, JsonObject root, String tag) {

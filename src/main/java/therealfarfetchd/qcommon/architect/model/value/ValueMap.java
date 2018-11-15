@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 class ValueMap<S, T> implements Value<T> {
 
     private final Value<S> wrapped;
@@ -30,6 +32,12 @@ class ValueMap<S, T> implements Value<T> {
         }
 
         return values;
+    }
+
+    @Nullable
+    @Override
+    public KeyInfo<T> getKeyInfo() {
+        return null; // TODO map KeyInfo<S> to KeyInfo<T>
     }
 
 }

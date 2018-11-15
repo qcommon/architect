@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
-public class Matcher<T> implements Value<T> {
+public class Matcher<T> implements Value<T>, KeyInfo {
 
     private final Map<MatchTest, T> map;
     private final T _default;
@@ -21,6 +21,11 @@ public class Matcher<T> implements Value<T> {
             .map(Map.Entry::getValue)
             .findFirst()
             .orElse(_default);
+    }
+
+    @Override
+    public Value<T> pull() {
+        return this;
     }
 
     @Override
