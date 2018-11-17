@@ -24,12 +24,11 @@ import therealfarfetchd.qcommon.architect.factories.FactoryRegistry;
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
 import therealfarfetchd.qcommon.architect.factories.TransformFactory;
 import therealfarfetchd.qcommon.architect.factories.impl.transform.FactoryIdentity;
+import therealfarfetchd.qcommon.architect.model.Transform;
 import therealfarfetchd.qcommon.architect.model.part.Part;
 import therealfarfetchd.qcommon.architect.model.part.PartTransformWrapper;
-import therealfarfetchd.qcommon.architect.model.Transform;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRefAbsolute;
-import therealfarfetchd.qcommon.architect.model.texref.TextureRefKey;
 import therealfarfetchd.qcommon.architect.model.value.Matcher;
 import therealfarfetchd.qcommon.architect.model.value.Value;
 import therealfarfetchd.qcommon.croco.Mat4;
@@ -182,29 +181,29 @@ public class JsonParserUtils {
     }
 
     public static <T> Value<T> parseGen(ParseContext ctx, JsonObject root, String tag, String tagType, Predicate<JsonElement> test, Function<JsonElement, T> mapper, T fallback) {
-        final String error1 = String.format("Missing '%s' tag!", tag);
-        final String error2 = String.format("'%s' tag needs to be %s!", tag, tagType);
-        final String error3 = String.format("Ambiguous tag: '%s' has both simple value and matcher!", tag);
-        final String error4 = String.format("'%s: match' tag needs to be an object!", tag);
-        final String error5 = String.format("'%s: match' has no default branch!", tag);
+        final String errNoValue = String.format("Missing '%s' tag!", tag);
+        final String errWrongType = String.format("'%s' tag needs to be %s!", tag, tagType);
+        final String errDupTag = String.format("Ambiguous tag: '%s' has both simple value and matcher!", tag);
+        final String errWrongMatchType = String.format("'%s: match' tag needs to be an object!", tag);
+        final String errNoDefault = String.format("'%s: match' has no default branch!", tag);
 
         boolean hasConstant = root.has(tag);
         boolean hasMatch = root.has(tag + ": match");
 
         if (!hasConstant && !hasMatch) {
-            ctx.error(error1);
+            ctx.error(errNoValue);
             return Value.wrap(fallback);
         }
 
         if (hasConstant && hasMatch) {
-            ctx.error(error3);
+            ctx.error(errDupTag);
         }
 
         if (hasConstant) {
             JsonElement je = root.get(tag);
 
             if (!test.test(je)) {
-                ctx.error(error2);
+                ctx.error(errWrongType);
                 return Value.wrap(fallback);
             }
 
@@ -213,7 +212,7 @@ public class JsonParserUtils {
             JsonElement je = root.get(tag + ": match");
 
             if (!je.isJsonObject()) {
-                ctx.error(error4);
+                ctx.error(errWrongMatchType);
                 return Value.wrap(fallback);
             }
 
@@ -222,7 +221,8 @@ public class JsonParserUtils {
             Map<Matcher.MatchTest, T> map = new HashMap<>();
 
             // I hate you Java, let me assign a fucking value in a lambda you stupid piece of shit >:(
-            Object[] _default = new Object[1];
+            @SuppressWarnings("unchecked")
+            T[] _default = (T[]) new Object[1];
 
             for (Map.Entry<String, JsonElement> entry : jo.entrySet()) {
                 boolean isDefaultBranch = entry.getKey().equals("default");
@@ -247,28 +247,27 @@ public class JsonParserUtils {
             }
 
             if (_default[0] == null) {
-                ctx.error(error5);
+                ctx.error(errNoDefault);
                 _default[0] = fallback;
             }
 
-            //noinspection unchecked
-            return new Matcher<>(map, (T) _default[0]);
+            return new Matcher<>(map, _default[0]);
         }
     }
 
     public static <T> T parseGenStatic(ParseContext ctx, JsonObject root, String tag, String tagType, Predicate<JsonElement> test, Function<JsonElement, T> mapper, T fallback) {
-        final String error1 = String.format("Missing '%s' tag!", tag);
-        final String error2 = String.format("'%s' tag needs to be %s!", tag, tagType);
+        final String errNoValue = String.format("Missing '%s' tag!", tag);
+        final String errWrongType = String.format("'%s' tag needs to be %s!", tag, tagType);
 
         if (!root.has(tag)) {
-            ctx.error(error1);
+            ctx.error(errNoValue);
             return fallback;
         }
 
         final JsonElement je = root.get(tag);
 
         if (!test.test(je)) {
-            ctx.error(error2);
+            ctx.error(errWrongType);
             return fallback;
         }
 
