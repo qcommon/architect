@@ -10,6 +10,6 @@
     "authorList": ["therealfarfetchd"],
     "logoFile": "",
     "screenshots": [],
-    "dependencies": []
+    "dependencies": ["qcommon-croco@[1.0.0,2.0.0)"]
   }
 ]
