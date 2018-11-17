@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -54,7 +55,8 @@ public class QuadFactory {
                         c.put(i, normal.x, normal.y, normal.z, 0f);
                         break;
                     case COLOR:
-                        c.put(i, 1f, 1f, 1f, 1f);
+                        final Color color = quad.getColor();
+                        c.put(i, color.getRed() * 255f, color.getGreen() * 255f, color.getBlue() * 255f, color.getAlpha() * 255f);
                         break;
                     case UV:
                         switch (el.getIndex()) {

@@ -4,6 +4,7 @@ import net.minecraft.util.EnumFacing;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.awt.Color;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
@@ -63,7 +64,7 @@ public class BoxFace {
             getUV(face, from, to, uv);
         }
 
-        return Optional.of(new Quad(texture, new Vertex(v[0], uv[0]), new Vertex(v[1], uv[1]), new Vertex(v[2], uv[2]), new Vertex(v[3], uv[3])));
+        return Optional.of(new Quad(texture, new Vertex(v[0], uv[0]), new Vertex(v[1], uv[1]), new Vertex(v[2], uv[2]), new Vertex(v[3], uv[3]), Color.WHITE));
     }
 
     public BoxFace show(boolean show) {

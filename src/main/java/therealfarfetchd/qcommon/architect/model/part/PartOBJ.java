@@ -26,9 +26,9 @@ public class PartOBJ implements Part {
             if (face.tex != null) t = TextureRef.fromString(face.tex);
             switch (face.verts.size()) {
                 case 3:
-                    return new Tri(t, face.verts.get(0), face.verts.get(1), face.verts.get(2));
+                    return new Tri(t, face.verts.get(0), face.verts.get(1), face.verts.get(2), face.rgba);
                 case 4:
-                    return new Quad(t, face.verts.get(0), face.verts.get(1), face.verts.get(2), face.verts.get(3));
+                    return new Quad(t, face.verts.get(0), face.verts.get(1), face.verts.get(2), face.verts.get(3), face.rgba);
                 default:
                     throw new IllegalStateException("Don't know how to handle a face with " + face.verts.size() + " vertices!");
             }

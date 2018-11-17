@@ -2,9 +2,11 @@ package therealfarfetchd.qcommon.architect.factories.impl.part;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import net.minecraft.util.ResourceLocation;
 
+import java.awt.Color;
 import java.util.Map;
 
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
@@ -56,15 +58,33 @@ public class FactoryOBJ implements PartFactory {
     }
 
     private Value<OBJMaterial> applyOverrides(ParseContext ctx, JsonObject json, OBJMaterial orig) {
-        Value<OBJMaterial> mat = null;
+        Value<OBJMaterial> mat = Value.wrap(orig);
 
-        // TODO color, transparency
         if (json.has("texture")) {
             Value<String> tex = JsonParserUtils.parseTextureRef(ctx, json, "texture", TextureRef.fromString(orig.diffuseTexture)).map(TextureRef::toStringRepr);
             mat = tex.map(orig::withDiffuseTexture);
         }
 
-        return mat == null ? Value.wrap(orig) : mat;
+        if (json.has("color")) {
+            Value<Color> color = JsonParserUtils.parseGenPrimitiveArray(ctx, json, "color", "color component", 3,
+                f -> f.isNumber() && f.getAsFloat() >= 0 && f.getAsFloat() <= 1,
+                arr -> new Color(arr.get(0).getAsFloat(), arr.get(1).getAsFloat(), arr.get(2).getAsFloat()),
+                orig.diffuse);
+
+            mat = mat.flatMap(m -> color.map(m::withDiffuse));
+        }
+
+        if (json.has("colour")) ctx.warn("no u"); // haha
+
+        if (json.has("transparency")) {
+            Value<Float> tr = JsonParserUtils.parseGenPrimitive(ctx, json, "transparency", "a number in [0,1]",
+                jsonPrimitive -> jsonPrimitive.isNumber() && jsonPrimitive.getAsFloat() >= 0 && jsonPrimitive.getAsFloat() <= 1,
+                JsonPrimitive::getAsFloat, orig.transparency);
+
+            mat = mat.flatMap(m -> tr.map(m::withTransparency));
+        }
+
+        return mat;
     }
 
 }

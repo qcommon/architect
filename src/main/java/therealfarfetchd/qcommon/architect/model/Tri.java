@@ -2,6 +2,7 @@ package therealfarfetchd.qcommon.architect.model;
 
 import net.minecraft.util.EnumFacing;
 
+import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Tri implements Face {
     public final Vertex v0;
     public final Vertex v1;
     public final Vertex v2;
+    public final Color color;
 
     private List<Quad> quads;
     private List<Tri> tris;
@@ -22,11 +24,12 @@ public class Tri implements Face {
     private Vec3 normal;
     private EnumFacing facing;
 
-    public Tri(TextureRef texture, Vertex v0, Vertex v1, Vertex v2) {
+    public Tri(TextureRef texture, Vertex v0, Vertex v1, Vertex v2, Color color) {
         this.texture = texture;
         this.v0 = v0;
         this.v1 = v1;
         this.v2 = v2;
+        this.color = color;
     }
 
     @Override
@@ -54,9 +57,14 @@ public class Tri implements Face {
     }
 
     @Override
+    public Color getColor() {
+        return color;
+    }
+
+    @Override
     public List<Quad> toQuads() {
         if (quads == null) {
-            quads = Collections.singletonList(new Quad(texture, v0, v1, v2, v2));
+            quads = Collections.singletonList(new Quad(texture, v0, v1, v2, v2, color));
         }
 
         return quads;
@@ -73,7 +81,7 @@ public class Tri implements Face {
 
     @Override
     public Tri transform(Mat4 mat) {
-        return new Tri(texture, v0.transform(mat), v1.transform(mat), v2.transform(mat));
+        return new Tri(texture, v0.transform(mat), v1.transform(mat), v2.transform(mat), color);
     }
 
 }

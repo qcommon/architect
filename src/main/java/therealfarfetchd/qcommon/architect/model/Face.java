@@ -2,6 +2,7 @@ package therealfarfetchd.qcommon.architect.model;
 
 import net.minecraft.util.EnumFacing;
 
+import java.awt.Color;
 import java.util.List;
 
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
@@ -15,6 +16,8 @@ public interface Face {
     Vec3 getNormal();
 
     EnumFacing getFacing();
+
+    Color getColor();
 
     List<Quad> toQuads();
 
