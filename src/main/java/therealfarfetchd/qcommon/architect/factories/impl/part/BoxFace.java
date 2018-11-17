@@ -50,6 +50,8 @@ public class BoxFace {
     }
 
     public Optional<Face> makeFace(EnumFacing face, Vec3 from, Vec3 to) {
+        if (!show) return Optional.empty();
+
         Vec3[] v = new Vec3[4];
         Vec2[] uv = new Vec2[4];
         getVec(face, from, to, v);
