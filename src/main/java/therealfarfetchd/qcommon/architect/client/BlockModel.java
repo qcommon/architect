@@ -81,7 +81,12 @@ public class BlockModel implements IModel {
     }
 
     private Quad snapToGrid(Quad q) {
-        return new Quad(q.texture, q.v0.withXYZ(snapToGrid(q.v0.xyz)), q.v1.withXYZ(snapToGrid(q.v1.xyz)), q.v2.withXYZ(snapToGrid(q.v2.xyz)), q.v3.withXYZ(snapToGrid(q.v3.xyz)), q.color);
+        return new Quad(q.texture,
+            q.v0.withXYZ(snapToGrid(q.v0.xyz)),
+            q.v1.withXYZ(snapToGrid(q.v1.xyz)),
+            q.v2.withXYZ(snapToGrid(q.v2.xyz)),
+            q.v3.withXYZ(snapToGrid(q.v3.xyz)),
+            q.color);
     }
 
     private Vec3 snapToGrid(Vec3 v) {
@@ -100,6 +105,8 @@ public class BlockModel implements IModel {
         l.put(null, new ArrayList<>());
 
         for (Quad q : quads) {
+            q = snapToGrid(q);
+
             BakedQuad baked = bake.apply(q);
 
             boolean isCullable = true;
