@@ -56,7 +56,7 @@ public class QuadFactory {
                         break;
                     case COLOR:
                         final Color color = quad.getColor();
-                        c.put(i, color.getRed() * 255f, color.getGreen() * 255f, color.getBlue() * 255f, color.getAlpha() * 255f);
+                        c.put(i, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
                         break;
                     case UV:
                         switch (el.getIndex()) {
