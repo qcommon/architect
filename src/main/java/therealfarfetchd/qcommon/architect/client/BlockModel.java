@@ -15,14 +15,19 @@ import net.minecraftforge.common.model.IModelState;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
 
 import therealfarfetchd.qcommon.architect.model.Face;
 import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.model.Quad;
+import therealfarfetchd.qcommon.architect.model.texref.TextureMapper;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.value.StateProvider;
 import therealfarfetchd.qcommon.croco.Vec3;
@@ -41,28 +46,38 @@ public class BlockModel implements IModel {
 
     @Override
     public Collection<ResourceLocation> getTextures() {
-        return model.getParts().getPossibleValues().parallelStream()
+        Set<ResourceLocation> requiredTextures = new HashSet<>();
+
+        TextureMapper tm = model.getTextureMapper().get(sp);
+        Function<String, ResourceLocation> tmapper = s -> select(tm.getTexture(s), TextureRef.PLACEHOLDER.texture);
+
+        model.getParts().getPossibleValues().parallelStream()
             .flatMap(Collection::parallelStream)
             .flatMap($ -> $.getFaces().parallelStream())
             .map(Face::getTexture)
             .map($ -> $.getTexture(unused -> TextureRef.PLACEHOLDER.texture))
-            .collect(Collectors.toSet());
+            .forEach(requiredTextures::add);
+
+        requiredTextures.add(tmapper.apply("particle"));
+
+        return requiredTextures;
     }
 
     @Override
     public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-        Function<TextureRef, TextureAtlasSprite> mapper = tr -> bakedTextureGetter.apply(tr.getTexture(unused -> TextureRef.PLACEHOLDER.texture));
+        TextureMapper tm = model.getTextureMapper().get(sp);
+
+        Function<TextureRef, TextureAtlasSprite> mapper = tr -> bakedTextureGetter.apply(tr.getTexture(tm));
+        TextureAtlasSprite particle = bakedTextureGetter.apply(select(tm.getTexture("particle"), TextureRef.PLACEHOLDER.texture));
 
         List<Quad> quadList = model.getParts().get(sp).parallelStream()
             .flatMap($ -> $.getFaces().parallelStream())
             .flatMap($ -> $.toQuads().parallelStream())
             .collect(Collectors.toList());
 
-        Map<EnumFacing, List<BakedQuad>> em = categorizeAndBake(quadList, quad -> QuadFactory.INSTANCE.bake(format, mapper, quad).get(0));
+        Map<EnumFacing, List<BakedQuad>> quadsMap = categorizeAndBake(quadList, quad -> QuadFactory.INSTANCE.bake(format, mapper, quad).get(0));
 
-        SimpleBakedModel b = new SimpleBakedModel(em.get(null), em, true, true, bakedTextureGetter.apply(TextureRef.PLACEHOLDER.texture), ItemCameraTransforms.DEFAULT, ItemOverrideList.NONE);
-
-        return b;
+        return new SimpleBakedModel(quadsMap.get(null), quadsMap, true, true, particle, ItemCameraTransforms.DEFAULT, ItemOverrideList.NONE);
     }
 
     private Quad snapToGrid(Quad q) {
@@ -113,6 +128,10 @@ public class BlockModel implements IModel {
         }
 
         return l;
+    }
+
+    private static <T> T select(@Nullable T t, T fallback) {
+        return t == null ? fallback : t;
     }
 
 }
