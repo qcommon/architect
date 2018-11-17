@@ -12,7 +12,7 @@ import therealfarfetchd.qcommon.architect.loader.ModelLoader;
 import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.proxy.CommonProxy;
 
-@Mod(modid = Architect.MODID, useMetadata = true)
+@Mod(modid = Architect.MODID, useMetadata = true, acceptableRemoteVersions = "*")
 public class Architect {
 
     public static final String MODID = "qcommon-architect";
