@@ -1,6 +1,5 @@
 package therealfarfetchd.qcommon.architect;
 
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -8,8 +7,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import therealfarfetchd.qcommon.architect.loader.ModelLoader;
-import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.proxy.CommonProxy;
 
 @Mod(modid = Architect.MODID, useMetadata = true, acceptableRemoteVersions = "*")
@@ -30,7 +27,6 @@ public class Architect {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
         proxy.preInit(e);
-        Model m = ModelLoader.INSTANCE.load(new ResourceLocation("qcommon-architect", "render/block/obsidian.json"));
     }
 
 }
