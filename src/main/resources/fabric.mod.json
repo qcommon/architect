@@ -1,0 +1,22 @@
+{
+  "id": "qcommon-architect",
+  "name": "Architect",
+  "description": "A universal model library",
+  "version": "1.0.0",
+  "license": "LGPLv3",
+  "side": "universal",
+  "initializer": "therealfarfetchd.qcommon.architect.Architect",
+  "authors": ["therealfarfetchd"],
+  "requires": {
+    "qcommon-croco": "1.0.2"
+  },
+  "links": {
+    "homepage": "https://github.com/qcommon/architect",
+    "issues": "https://github.com/qcommon/architect/issues",
+    "sources": "https://github.com/qcommon/architect"
+  },
+  "mixins": {
+    "client": "architect-mixins-client.json",
+    "common": "architect-mixins-common.json"
+  }
+}
