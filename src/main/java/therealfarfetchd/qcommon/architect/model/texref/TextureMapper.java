@@ -1,12 +1,12 @@
 package therealfarfetchd.qcommon.architect.model.texref;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import javax.annotation.Nullable;
 
 public interface TextureMapper {
 
     @Nullable
-    ResourceLocation getTexture(String key);
+    Identifier getTexture(String key);
 
 }

@@ -1,36 +1,33 @@
 package therealfarfetchd.qcommon.architect.client;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ICustomModelLoader;
-import net.minecraftforge.client.model.IModel;
+import net.minecraft.client.render.model.UnbakedModel;
+import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import therealfarfetchd.qcommon.architect.Architect;
 import therealfarfetchd.qcommon.architect.loader.ModelLoader;
 import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.model.value.VariantStateProvider;
 
-public class BlockModelLoader implements ICustomModelLoader {
+public class BlockModelLoader implements CustomModelLoader {
 
     public static final BlockModelLoader INSTANCE = new BlockModelLoader();
 
-    private Map<ResourceLocation, Model> models = new HashMap<>();
+    private Map<Identifier, Model> models = new HashMap<>();
 
     @Override
-    public boolean accepts(ResourceLocation modelLocation) {
-        if (!(modelLocation instanceof ModelResourceLocation)) return false;
+    public boolean accepts(Identifier id) {
+        if (!(id instanceof ModelIdentifier)) return false;
 
-        if (((ModelResourceLocation) modelLocation).getVariant().equals("inventory")) return false; // no items
+        if (((ModelIdentifier) id).getVariant().equals("inventory")) return false; // no items
 
-        ResourceLocation model = new ResourceLocation(modelLocation.getNamespace(), String.format("render/block/%s.json", modelLocation.getPath()));
+        Identifier model = new Identifier(id.getNamespace(), String.format("render/block/%s.json", id.getPath()));
         if (models.containsKey(model)) return true;
 
         boolean fileExists = false;
@@ -42,9 +39,9 @@ public class BlockModelLoader implements ICustomModelLoader {
     }
 
     @Override
-    public IModel loadModel(ResourceLocation modelLocation) {
-        ResourceLocation model = new ResourceLocation(modelLocation.getNamespace(), String.format("render/block/%s.json", modelLocation.getPath()));
-        VariantStateProvider vsp = new VariantStateProvider(((ModelResourceLocation) modelLocation).getVariant());
+    public UnbakedModel loadModel(Identifier id) {
+        Identifier model = new Identifier(id.getNamespace(), String.format("render/block/%s.json", id.getPath()));
+        VariantStateProvider vsp = new VariantStateProvider(((ModelIdentifier) id).getVariant());
 
         Model m = models.computeIfAbsent(model, ModelLoader.INSTANCE::load);
 
@@ -57,7 +54,7 @@ public class BlockModelLoader implements ICustomModelLoader {
     }
 
     @Override
-    public void onResourceManagerReload(@Nonnull IResourceManager resourceManager) {
+    public void onResourceReload(ResourceManager var1) {
         models.clear();
     }
 

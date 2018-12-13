@@ -1,6 +1,6 @@
 package therealfarfetchd.qcommon.architect.factories.impl.part;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.Direction;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -49,7 +49,7 @@ public class BoxFace {
         this.uvs = uvs;
     }
 
-    public Optional<Face> makeFace(EnumFacing face, Vec3 from, Vec3 to) {
+    public Optional<Face> makeFace(Direction face, Vec3 from, Vec3 to) {
         if (!show) return Optional.empty();
 
         Vec3[] v = new Vec3[4];
@@ -95,7 +95,7 @@ public class BoxFace {
         }
     }
 
-    private static void getVec(EnumFacing face, Vec3 from, Vec3 to, Vec3[] v) {
+    private static void getVec(Direction face, Vec3 from, Vec3 to, Vec3[] v) {
         switch (face) {
             case DOWN:
                 v[1] = from;
@@ -138,7 +138,7 @@ public class BoxFace {
         }
     }
 
-    private static void getUV(EnumFacing face, Vec3 from, Vec3 to, Vec2[] uv) {
+    private static void getUV(Direction face, Vec3 from, Vec3 to, Vec2[] uv) {
         switch (face) {
             case DOWN:
                 uv[0] = new Vec2(from.x, 1 - to.z);

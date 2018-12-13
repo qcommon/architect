@@ -1,29 +1,25 @@
 package therealfarfetchd.qcommon.architect.proxy;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraft.util.Identifier;
 
 import java.io.InputStream;
 
 import javax.annotation.Nullable;
 
 import therealfarfetchd.qcommon.architect.Architect;
-import therealfarfetchd.qcommon.architect.factories.FactoryRegistry;
 
 public class CommonProxy {
 
-    public void preInit(FMLPreInitializationEvent e) {
-        FactoryRegistry.INSTANCE.readFactoryDefinitions();
+    @Nullable
+    public InputStream openResource(Identifier id, boolean respectResourcePack) {
+        return Architect.class.getClassLoader().getResourceAsStream(String.format("assets/%s/%s", id.getNamespace(), id.getPath()));
     }
 
     @Nullable
-    public InputStream openResource(ResourceLocation rl, boolean respectResourcePack) {
-        return Architect.class.getClassLoader().getResourceAsStream(String.format("assets/%s/%s", rl.getNamespace(), rl.getPath()));
+    public InputStream openResource(Identifier id) {
+        return openResource(id, true);
     }
 
-    @Nullable
-    public InputStream openResource(ResourceLocation rl) {
-        return openResource(rl, true);
-    }
+    public void registerModelLoader() {}
 
 }

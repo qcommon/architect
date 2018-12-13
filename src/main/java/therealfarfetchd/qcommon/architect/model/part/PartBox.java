@@ -1,6 +1,6 @@
 package therealfarfetchd.qcommon.architect.model.part;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.Direction;
 
 import java.util.List;
 import java.util.Map;
@@ -13,10 +13,10 @@ import therealfarfetchd.qcommon.croco.Vec3;
 
 public class PartBox implements Part {
 
-    private final Map<EnumFacing, BoxFace> textures;
+    private final Map<Direction, BoxFace> textures;
     private final Vec3 from, to;
 
-    public PartBox(Map<EnumFacing, BoxFace> textures, Vec3 from, Vec3 to) {
+    public PartBox(Map<Direction, BoxFace> textures, Vec3 from, Vec3 to) {
         this.textures = textures;
         this.from = from;
         this.to = to;

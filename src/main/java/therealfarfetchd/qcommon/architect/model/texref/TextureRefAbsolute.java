@@ -1,19 +1,19 @@
 package therealfarfetchd.qcommon.architect.model.texref;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import java.util.Objects;
 
 public class TextureRefAbsolute implements TextureRef {
 
-    public final ResourceLocation texture;
+    public final Identifier texture;
 
-    public TextureRefAbsolute(ResourceLocation texture) {
+    public TextureRefAbsolute(Identifier texture) {
         this.texture = texture;
     }
 
     @Override
-    public ResourceLocation getTexture(TextureMapper tm) {
+    public Identifier getTexture(TextureMapper tm) {
         return texture;
     }
 

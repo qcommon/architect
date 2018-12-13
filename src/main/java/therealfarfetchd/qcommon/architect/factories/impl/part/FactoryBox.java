@@ -3,7 +3,7 @@ package therealfarfetchd.qcommon.architect.factories.impl.part;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.Direction;
 
 import java.util.EnumMap;
 
@@ -19,13 +19,13 @@ import therealfarfetchd.qcommon.croco.Vec3;
 
 public class FactoryBox implements PartFactory {
 
-    private static final EnumMap<EnumFacing, Value<BoxFace>> INITIAL_TEXTURES = new EnumMap<>(EnumFacing.class);
+    private static final EnumMap<Direction, Value<BoxFace>> INITIAL_TEXTURES = new EnumMap<>(Direction.class);
     private static final Vec3 FROM = Vec3.ORIGIN;
     private static final Vec3 TO = new Vec3(1, 1, 1);
 
     @Override
     public Value<Part> parse(ParseContext ctx, JsonObject json) {
-        EnumMap<EnumFacing, Value<BoxFace>> em = INITIAL_TEXTURES.clone();
+        EnumMap<Direction, Value<BoxFace>> em = INITIAL_TEXTURES.clone();
         Value<Vec3> from = Value.wrap(FROM);
         Value<Vec3> to = Value.wrap(TO);
 
@@ -35,7 +35,7 @@ public class FactoryBox implements PartFactory {
         if (json.has("faces")) {
             JsonObject jo = JsonParserUtils.parseGenObjectStatic(ctx, json, "faces", "an object", $ -> true, $ -> $, new JsonObject());
 
-            for (EnumFacing f : EnumFacing.VALUES) {
+            for (Direction f : Direction.values()) {
                 em.put(f, apply(ctx, em.get(f), jo, "all"));
                 em.put(f, apply(ctx, em.get(f), jo, f.getName()));
             }
@@ -73,7 +73,7 @@ public class FactoryBox implements PartFactory {
     }
 
     static {
-        for (EnumFacing f : EnumFacing.VALUES) {
+        for (Direction f : Direction.values()) {
             INITIAL_TEXTURES.put(f, Value.wrap(new BoxFace(TextureRef.PLACEHOLDER)));
         }
     }

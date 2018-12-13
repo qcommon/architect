@@ -1,6 +1,6 @@
 package therealfarfetchd.qcommon.architect.model;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.Direction;
 
 import java.awt.Color;
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class Tri implements Face {
     private List<Tri> tris;
 
     private Vec3 normal;
-    private EnumFacing facing;
+    private Direction facing;
 
     public Tri(TextureRef texture, Vertex v0, Vertex v1, Vertex v2, Color color) {
         this.texture = texture;
@@ -47,10 +47,10 @@ public class Tri implements Face {
     }
 
     @Override
-    public EnumFacing getFacing() {
+    public Direction getFacing() {
         if (facing == null) {
             Vec3 n = getNormal();
-            facing = EnumFacing.getFacingFromVector(n.x, n.y, n.z);
+            facing = Direction.getFacing(n.x, n.y, n.z);
         }
 
         return facing;

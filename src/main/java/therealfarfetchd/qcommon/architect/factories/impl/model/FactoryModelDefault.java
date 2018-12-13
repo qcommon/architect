@@ -3,7 +3,7 @@ package therealfarfetchd.qcommon.architect.factories.impl.model;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +48,7 @@ public class FactoryModelDefault implements ModelFactory {
             Value<Map<String, TextureRef>> map1 = Value.extract(map);
 
             texs = map1.map(m -> {
-                Map<String, ResourceLocation> result = new HashMap<>();
+                Map<String, Identifier> result = new HashMap<>();
 
                 List<String> tried = new ArrayList<>();
                 for (String s : m.keySet()) {

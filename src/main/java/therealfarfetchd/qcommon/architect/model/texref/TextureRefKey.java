@@ -1,6 +1,6 @@
 package therealfarfetchd.qcommon.architect.model.texref;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import java.util.Objects;
 
@@ -15,10 +15,10 @@ public class TextureRefKey implements TextureRef {
     }
 
     @Override
-    public ResourceLocation getTexture(TextureMapper tm) {
-        ResourceLocation rl = tm.getTexture(key);
+    public Identifier getTexture(TextureMapper tm) {
+        Identifier rl = tm.getTexture(key);
         // TODO warning message for missing key
-        return rl != null ? rl : new ResourceLocation(Architect.MODID, "pablo");
+        return rl != null ? rl : new Identifier(Architect.MODID, "pablo");
     }
 
     @Override

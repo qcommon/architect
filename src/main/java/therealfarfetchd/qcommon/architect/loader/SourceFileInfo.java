@@ -1,22 +1,22 @@
 package therealfarfetchd.qcommon.architect.loader;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 public class SourceFileInfo {
 
     public final String fileName;
-    public final ResourceLocation path;
+    public final Identifier path;
 
-    public SourceFileInfo(ResourceLocation path) {
+    public SourceFileInfo(Identifier path) {
         this(getFileName(path), path);
     }
 
-    public SourceFileInfo(String fileName, ResourceLocation path) {
+    public SourceFileInfo(String fileName, Identifier path) {
         this.fileName = fileName;
         this.path = path;
     }
 
-    public static String getFileName(ResourceLocation rl) {
+    public static String getFileName(Identifier rl) {
         return rl.getPath().substring(rl.getPath().lastIndexOf('/') + 1);
     }
 

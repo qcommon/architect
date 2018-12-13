@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -140,7 +140,7 @@ public class JsonParserUtils {
     }
 
     public static Value<TextureRef> parseTextureRef(ParseContext ctx, JsonObject root, String tag) {
-        return parseTextureRef(ctx, root, tag, new TextureRefAbsolute(new ResourceLocation(Architect.MODID, "error")));
+        return parseTextureRef(ctx, root, tag, new TextureRefAbsolute(new Identifier(Architect.MODID, "error")));
     }
 
     public static Value<TextureRef> parseTextureRef(ParseContext ctx, JsonObject root, String tag, TextureRef fallback) {
@@ -153,8 +153,8 @@ public class JsonParserUtils {
 
     public static Value<Part> parsePart(ParseContext ctx, JsonObject root) {
         PartFactory pf = parseGenStringStatic(ctx, root, "type", "a part type",
-            s -> FactoryRegistry.INSTANCE.getPartFactory(new ResourceLocation(s)) != null,
-            s -> FactoryRegistry.INSTANCE.getPartFactory(new ResourceLocation(s)),
+            s -> FactoryRegistry.INSTANCE.getPartFactory(new Identifier(s)) != null,
+            s -> FactoryRegistry.INSTANCE.getPartFactory(new Identifier(s)),
             (p1, p2) -> Value.wrap(Part.EMPTY));
 
         final Value<Part> part = pf.parse(ctx, root);
@@ -173,8 +173,8 @@ public class JsonParserUtils {
 
     public static Value<Transform> parseTransform(ParseContext ctx, JsonObject root) {
         TransformFactory tf = parseGenStringStatic(ctx, root, "type", "a transform type",
-            s -> FactoryRegistry.INSTANCE.getTransformFactory(new ResourceLocation(s)) != null,
-            s -> FactoryRegistry.INSTANCE.getTransformFactory(new ResourceLocation(s)),
+            s -> FactoryRegistry.INSTANCE.getTransformFactory(new Identifier(s)) != null,
+            s -> FactoryRegistry.INSTANCE.getTransformFactory(new Identifier(s)),
             (p1, p2) -> FactoryIdentity.IDENTITY_V);
 
         return tf.parse(ctx, root);

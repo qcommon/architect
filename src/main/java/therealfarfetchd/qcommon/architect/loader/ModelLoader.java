@@ -2,7 +2,7 @@ package therealfarfetchd.qcommon.architect.loader;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import javax.annotation.Nullable;
 
@@ -17,15 +17,15 @@ public class ModelLoader extends GenLoaderJSON<Model> {
 
     @Override
     public Model load(ParseContext ctx, SourceFileInfo info, JsonObject json) {
-        ResourceLocation rl = new ResourceLocation("minecraft", "default");
+        Identifier id = new Identifier("minecraft", "default");
         if (json.has("type")) {
-            rl = JsonParserUtils.parseGenStringStatic(ctx, json, "type", "a model type", s -> true, ResourceLocation::new, rl);
+            id = JsonParserUtils.parseGenStringStatic(ctx, json, "type", "a model type", s -> true, Identifier::new, id);
         }
 
-        ModelFactory mf = FactoryRegistry.INSTANCE.getModelFactory(rl);
+        ModelFactory mf = FactoryRegistry.INSTANCE.getModelFactory(id);
 
         if (mf == null) {
-            ctx.error(String.format("Invalid model type '%s'", rl));
+            ctx.error(String.format("Invalid model type '%s'", id));
             return EmptyModel.INSTANCE;
         }
 
@@ -44,7 +44,7 @@ public class ModelLoader extends GenLoaderJSON<Model> {
 
     @Nullable
     @Override
-    public JsonObject loadSource(ParseContext ctx, ResourceLocation rl) {
+    public JsonObject loadSource(ParseContext ctx, Identifier rl) {
         return super.loadSource(ctx, rl);
     }
 

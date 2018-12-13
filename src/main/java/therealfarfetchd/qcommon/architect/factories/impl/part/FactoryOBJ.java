@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import java.awt.Color;
 import java.util.Map;
@@ -25,8 +25,8 @@ public class FactoryOBJ implements PartFactory {
 
     @Override
     public Value<Part> parse(ParseContext ctx, JsonObject json) {
-        ResourceLocation rl = JsonParserUtils.parseGenStringStatic(ctx, json, "model", "an OBJ model location", $ -> true, ResourceLocation::new, new ResourceLocation("qcommon-architect:empty"));
-        rl = new ResourceLocation(rl.getNamespace(), String.format("render/obj/%s.obj", rl.getPath()));
+        Identifier rl = JsonParserUtils.parseGenStringStatic(ctx, json, "model", "an OBJ model location", $ -> true, Identifier::new, new Identifier("qcommon-architect:empty"));
+        rl = new Identifier(rl.getNamespace(), String.format("render/obj/%s.obj", rl.getPath()));
 
         OBJRoot objIn = OBJLoader.INSTANCE.load(rl);
 

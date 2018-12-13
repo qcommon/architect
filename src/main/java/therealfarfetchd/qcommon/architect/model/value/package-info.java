@@ -4,4 +4,4 @@ package therealfarfetchd.qcommon.architect.model.value;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import mcp.MethodsReturnNonnullByDefault;
+import therealfarfetchd.qcommon.MethodsReturnNonnullByDefault;

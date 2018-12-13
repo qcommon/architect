@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
+import net.fabricmc.loader.FabricLoader;
+import net.minecraft.util.Identifier;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -22,49 +22,49 @@ public class FactoryRegistry {
 
     public static final FactoryRegistry INSTANCE = new FactoryRegistry();
 
-    private Map<ResourceLocation, TransformFactory> transforms = new HashMap<>();
-    private Map<ResourceLocation, PartFactory> parts = new HashMap<>();
-    private Map<ResourceLocation, ModelFactory> models = new HashMap<>();
+    private Map<Identifier, TransformFactory> transforms = new HashMap<>();
+    private Map<Identifier, PartFactory> parts = new HashMap<>();
+    private Map<Identifier, ModelFactory> models = new HashMap<>();
 
     private FactoryRegistry() {}
 
-    private void registerTransformFactory(ResourceLocation rl, TransformFactory tf) {
-        if (transforms.containsKey(rl)) {
-            Architect.INSTANCE.logger.warn("Overriding existing transform {} ({}) with {}", rl, transforms.get(rl).getClass(), tf.getClass());
+    private void registerTransformFactory(Identifier id, TransformFactory tf) {
+        if (transforms.containsKey(id)) {
+            Architect.INSTANCE.logger.warn("Overriding existing transform {} ({}) with {}", id, transforms.get(id).getClass(), tf.getClass());
         }
 
-        transforms.put(rl, tf);
+        transforms.put(id, tf);
     }
 
-    private void registerPartFactory(ResourceLocation rl, PartFactory pf) {
-        if (parts.containsKey(rl)) {
-            Architect.INSTANCE.logger.warn("Overriding existing part {} ({}) with {}", rl, parts.get(rl).getClass(), pf.getClass());
+    private void registerPartFactory(Identifier id, PartFactory pf) {
+        if (parts.containsKey(id)) {
+            Architect.INSTANCE.logger.warn("Overriding existing part {} ({}) with {}", id, parts.get(id).getClass(), pf.getClass());
         }
 
-        parts.put(rl, pf);
+        parts.put(id, pf);
     }
 
-    private void registerModelFactory(ResourceLocation rl, ModelFactory mf) {
-        if (models.containsKey(rl)) {
-            Architect.INSTANCE.logger.warn("Overriding existing model {} ({}) with {}", rl, models.get(rl).getClass(), mf.getClass());
+    private void registerModelFactory(Identifier id, ModelFactory mf) {
+        if (models.containsKey(id)) {
+            Architect.INSTANCE.logger.warn("Overriding existing model {} ({}) with {}", id, models.get(id).getClass(), mf.getClass());
         }
 
-        models.put(rl, mf);
+        models.put(id, mf);
     }
 
     @Nullable
-    public TransformFactory getTransformFactory(ResourceLocation rl) {
-        return transforms.get(rl);
+    public TransformFactory getTransformFactory(Identifier id) {
+        return transforms.get(id);
     }
 
     @Nullable
-    public PartFactory getPartFactory(ResourceLocation rl) {
-        return parts.get(rl);
+    public PartFactory getPartFactory(Identifier id) {
+        return parts.get(id);
     }
 
     @Nullable
-    public ModelFactory getModelFactory(ResourceLocation rl) {
-        return models.get(rl);
+    public ModelFactory getModelFactory(Identifier id) {
+        return models.get(id);
     }
 
     private void readFactoryDefinitions(ParseContext ctx, String modid, JsonObject json) {
@@ -78,9 +78,9 @@ public class FactoryRegistry {
     }
 
     private void readFactoryDefinitions(String modid) {
-        ResourceLocation rl = new ResourceLocation(modid, "render/_factories.json");
+        Identifier id = new Identifier(modid, "render/_factories.json");
         ParseContext ctx = new ParseContext(String.format("'%s' factories", modid));
-        JsonObject obj = ModelLoader.INSTANCE.loadSource(ctx, rl);
+        JsonObject obj = ModelLoader.INSTANCE.loadSource(ctx, id);
         if (ctx.isResultValid()) {
             assert obj != null;
             readFactoryDefinitions(ctx, modid, obj);
@@ -89,10 +89,10 @@ public class FactoryRegistry {
     }
 
     public void readFactoryDefinitions() {
-        Loader.instance().getIndexedModList().keySet().forEach(this::readFactoryDefinitions);
+        FabricLoader.INSTANCE.getMods().forEach(mc -> readFactoryDefinitions(mc.getInfo().getId()));
     }
 
-    private <T> void readDefinitionPart(ParseContext ctx, String modid, JsonObject json, String key, String typeSpec, Class<T> clazz, BiConsumer<ResourceLocation, T> register) {
+    private <T> void readDefinitionPart(ParseContext ctx, String modid, JsonObject json, String key, String typeSpec, Class<T> clazz, BiConsumer<Identifier, T> register) {
         if (json.has(key)) {
             final JsonElement transforms = json.get(key);
             if (transforms.isJsonObject()) {
@@ -104,14 +104,14 @@ public class FactoryRegistry {
         }
     }
 
-    private <T> void readGenDefinitions(ParseContext ctx, String modid, JsonObject json, Class<T> clazz, String typeSpec, BiConsumer<ResourceLocation, T> register) {
+    private <T> void readGenDefinitions(ParseContext ctx, String modid, JsonObject json, Class<T> clazz, String typeSpec, BiConsumer<Identifier, T> register) {
         for (Map.Entry<String, JsonElement> e : json.entrySet()) {
             final String name = e.getKey();
-            ResourceLocation rl;
+            Identifier id;
             if (name.contains(":")) {
-                rl = new ResourceLocation(name);
+                id = new Identifier(name);
             } else {
-                rl = new ResourceLocation(modid, name);
+                id = new Identifier(modid, name);
             }
             if (!(e.getValue() instanceof JsonPrimitive)) {
                 ctx.error(String.format("Invalid type for %s '%s' (%s)", typeSpec, name, e.getValue().toString()));
@@ -144,7 +144,7 @@ public class FactoryRegistry {
                 ctx.error(String.format("Failed to instantiate %s class '%s'", typeSpec, implName));
                 continue;
             }
-            register.accept(rl, o);
+            register.accept(id, o);
         }
     }
 

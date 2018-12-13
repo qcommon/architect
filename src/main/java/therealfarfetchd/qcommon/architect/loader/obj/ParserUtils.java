@@ -1,6 +1,6 @@
 package therealfarfetchd.qcommon.architect.loader.obj;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 
 class ParserUtils {
 
-    public static ResourceLocation getRelativeResource(ResourceLocation base, String rpath) {
+    public static Identifier getRelativeResource(Identifier base, String rpath) {
         if (rpath.contains(":")) {
-            return new ResourceLocation(rpath);
+            return new Identifier(rpath);
         } else if (rpath.startsWith("/")) {
-            return new ResourceLocation(base.getNamespace(), rpath.replaceAll("^/+", ""));
+            return new Identifier(base.getNamespace(), rpath.replaceAll("^/+", ""));
         } else {
-            return new ResourceLocation(base.getNamespace(), base.getPath().replaceAll("[^/]+$", rpath));
+            return new Identifier(base.getNamespace(), base.getPath().replaceAll("[^/]+$", rpath));
         }
     }
 

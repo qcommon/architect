@@ -1,6 +1,6 @@
 package therealfarfetchd.qcommon.architect.loader;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,16 +15,16 @@ public abstract class GenLoader<T, S> {
 
     public abstract T load(ParseContext ctx, SourceFileInfo info, S source);
 
-    public T load(ParseContext ctx, ResourceLocation rl) {
-        S source = loadSource(ctx, rl);
+    public T load(ParseContext ctx, Identifier id) {
+        S source = loadSource(ctx, id);
 
         if (source == null) return getError();
 
-        return load(ctx, new SourceFileInfo(rl), source);
+        return load(ctx, new SourceFileInfo(id), source);
     }
 
     @Nullable
-    public T load(ResourceLocation rl) {
+    public T load(Identifier rl) {
         ParseContext ctx = new ParseContext(String.format("%s '%s'", getTypeName(), SourceFileInfo.getFileName(rl)));
         T m = load(ctx, rl);
         ctx.printMessages();
@@ -36,11 +36,11 @@ public abstract class GenLoader<T, S> {
     protected abstract String getTypeName();
 
     @Nullable
-    protected S loadSource(ParseContext ctx, ResourceLocation rl) {
+    protected S loadSource(ParseContext ctx, Identifier id) {
         S source = null;
-        try (InputStream istr = Architect.proxy.openResource(rl, true)) {
+        try (InputStream istr = Architect.proxy.openResource(id, true)) {
             if (istr == null) {
-                ctx.error(String.format("Could not open file '%s'", rl));
+                ctx.error(String.format("Could not open file '%s'", id));
                 return null;
             }
             source = loadSourceFromStream(ctx, istr);

@@ -1,6 +1,6 @@
 package therealfarfetchd.qcommon.architect.model.part;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +19,7 @@ public class PartOBJ implements Part {
     private final List<Face> faces;
 
     public PartOBJ(PreparedOBJ obj) {
-        TextureRef placeholder = new TextureRefAbsolute(new ResourceLocation(Architect.MODID, "white"));
+        TextureRef placeholder = new TextureRefAbsolute(new Identifier(Architect.MODID, "white"));
 
         faces = obj.objects.values().parallelStream().flatMap(Collection::parallelStream).map(face -> {
             TextureRef t = placeholder;

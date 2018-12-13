@@ -1,6 +1,6 @@
 package therealfarfetchd.qcommon.architect.model;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.Direction;
 
 import java.awt.Color;
 import java.util.List;
@@ -15,7 +15,7 @@ public interface Face {
 
     Vec3 getNormal();
 
-    EnumFacing getFacing();
+    Direction getFacing();
 
     Color getColor();
 

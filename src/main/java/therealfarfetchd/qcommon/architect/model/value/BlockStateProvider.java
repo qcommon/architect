@@ -1,7 +1,7 @@
 package therealfarfetchd.qcommon.architect.model.value;
 
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.property.Property;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,11 +11,11 @@ import javax.annotation.Nullable;
 
 public class BlockStateProvider implements StateProvider {
 
-    public final IBlockState state;
+    public final BlockState state;
 
     private Map<String, String> cache = new HashMap<>();
 
-    public BlockStateProvider(IBlockState state) {
+    public BlockStateProvider(BlockState state) {
         this.state = state;
     }
 
@@ -23,7 +23,7 @@ public class BlockStateProvider implements StateProvider {
     @Override
     public String getState(String key) {
         return cache.computeIfAbsent(key, k ->
-            state.getPropertyKeys()
+            state.getProperties()
                 .parallelStream()
                 .filter($ -> $.getName().equals(k))
                 .findAny()
@@ -33,8 +33,8 @@ public class BlockStateProvider implements StateProvider {
     }
 
     // only needed because java's generics are garbage
-    private <T extends Comparable<T>> String getPropValueAsString(IBlockState st, IProperty<T> prop) {
-        return prop.getName(state.getValue(prop));
+    private <T extends Comparable<T>> String getPropValueAsString(BlockState st, Property<T> prop) {
+        return prop.getValueAsString(state.get(prop));
     }
 
     @Override

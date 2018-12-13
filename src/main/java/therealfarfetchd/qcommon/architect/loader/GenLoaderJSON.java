@@ -4,15 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.minecraft.util.ResourceLocation;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.annotation.Nullable;
-
-import therealfarfetchd.qcommon.architect.Architect;
 
 public abstract class GenLoaderJSON<T> extends GenLoader<T, JsonObject> {
 
