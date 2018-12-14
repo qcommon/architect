@@ -47,10 +47,10 @@ public class QuadFactory {
         for (VertexFormatElement el : elements) {
             switch (el.getType()) {
                 case POSITION:
-                    putData(buf, el, v.xyz.x, v.xyz.y, v.xyz.z, 1f);
+                    putData(buf, el, v.xyz.x, v.xyz.y, v.xyz.z);
                     break;
                 case NORMAL:
-                    putData(buf, el, normal.x, normal.y, normal.z, 0f);
+                    putData(buf, el, normal.x, normal.y, normal.z);
                     break;
                 case COLOR:
                     putData(buf, el, color.getRed(), color.getBlue(), color.getGreen(), color.getAlpha());
@@ -61,7 +61,7 @@ public class QuadFactory {
                             putData(buf, el, tex.getU(v.uv.x * 16), tex.getV(v.uv.y * 16));
                             break;
                         case 1: // lightmap
-                            putData(buf, el, 0f, 0f, 0f, 1f);
+                            putData(buf, el, 0f, 0f);
                             break;
                     }
                     break;
