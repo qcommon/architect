@@ -14,11 +14,11 @@ minecraft {
 
 dependencies {
   minecraft("com.mojang:minecraft:18w50a")
-  mappings("net.fabricmc:yarn:18w50a.2")
-  modCompile("net.fabricmc:fabric-loader:0.2.0.64")
+  mappings("net.fabricmc:yarn:18w50a.15")
+  modCompile("net.fabricmc:fabric-loader:0.2.0.70")
 
   // Fabric API. This is technically optional, but you probably want it anyway.
-  modCompile("net.fabricmc:fabric:0.1.1.47")
+  modCompile("net.fabricmc:fabric:0.1.1.51")
 
   compile(files("qcommon-croco-1.0.2-dev.jar"))
   compile("com.google.code.findbugs:jsr305:3.0.2")

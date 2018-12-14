@@ -28,7 +28,7 @@ public class QuadFactory {
     }
 
     private BakedQuad bake(VertexFormat vf, Function<TextureRef, Sprite> mapper, Quad quad) {
-        ByteBuffer buf = ByteBuffer.allocate(128);
+        ByteBuffer buf = ByteBuffer.allocate(4 * vf.getVertexSize());
 
         Sprite tex = mapper.apply(quad.texture);
 
@@ -39,13 +39,16 @@ public class QuadFactory {
 
         int[] d = bytesToInts(buf.array(), buf.position());
 
-        return new BakedQuad(d, 0, quad.getFacing(), mapper.apply(quad.texture));
+        final BakedQuad bakedQuad = new BakedQuad(d, 0, quad.getFacing(), mapper.apply(quad.texture));
+
+        Quad unpacked = QuadUnpacker.INSTANCE.unpack(vf, bakedQuad);
+
+        return bakedQuad;
     }
 
     private void pushVertex(ByteBuffer buf, VertexFormat vf, Vertex v, Vec3 normal, Color color, Sprite tex) {
         List<VertexFormatElement> elements = vf.getElements();
-        for (int i = 0; i < elements.size(); i++) {
-            VertexFormatElement el = elements.get(i);
+        for (VertexFormatElement el : elements) {
             switch (el.getType()) {
                 case POSITION:
                     putData(buf, el, v.xyz.x, v.xyz.y, v.xyz.z, 1f);
@@ -54,7 +57,7 @@ public class QuadFactory {
                     putData(buf, el, normal.x, normal.y, normal.z, 0f);
                     break;
                 case COLOR:
-                    putData(buf, el, color.getRed() / 255f, color.getBlue() / 255f, color.getGreen() / 255f, color.getAlpha() / 255f);
+                    putData(buf, el, color.getRed(), color.getBlue(), color.getGreen(), color.getAlpha());
                     break;
                 case UV:
                     switch (el.getIndex()) {

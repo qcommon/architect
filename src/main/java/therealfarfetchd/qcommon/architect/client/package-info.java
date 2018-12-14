@@ -1,0 +1,7 @@
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+package therealfarfetchd.qcommon.architect.client;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import therealfarfetchd.qcommon.MethodsReturnNonnullByDefault;
