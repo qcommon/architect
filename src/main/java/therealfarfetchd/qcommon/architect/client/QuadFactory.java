@@ -39,11 +39,7 @@ public class QuadFactory {
 
         int[] d = bytesToInts(buf.array(), buf.position());
 
-        final BakedQuad bakedQuad = new BakedQuad(d, 0, quad.getFacing(), mapper.apply(quad.texture));
-
-        Quad unpacked = QuadUnpacker.INSTANCE.unpack(vf, bakedQuad);
-
-        return bakedQuad;
+        return new BakedQuad(d, 0, quad.getFacing(), mapper.apply(quad.texture));
     }
 
     private void pushVertex(ByteBuffer buf, VertexFormat vf, Vertex v, Vec3 normal, Color color, Sprite tex) {
