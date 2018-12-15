@@ -83,7 +83,7 @@ public class BlockModel implements UnbakedModel {
             .flatMap($ -> $.toQuads().parallelStream())
             .collect(Collectors.toList());
 
-        Map<Direction, List<BakedQuad>> quadsMap = categorizeAndBake(quadList, quad -> QuadFactory.INSTANCE.bake(VertexFormats.field_1582, mapper, quad).get(0));
+        Map<Direction, List<BakedQuad>> quadsMap = categorizeAndBake(quadList, quad -> QuadFactory.INSTANCE.bake(VertexFormats.field_1590, mapper, quad).get(0));
 
         return new BasicBakedModel(quadsMap.get(null), quadsMap, true, true, particle, ModelTransformations.ORIGIN, ModelItemPropertyOverrideList.ORIGIN);
     }
