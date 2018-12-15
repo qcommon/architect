@@ -53,7 +53,7 @@ public class QuadFactory {
                     putData(buf, el, normal.x, normal.y, normal.z);
                     break;
                 case COLOR:
-                    putData(buf, el, color.getRed(), color.getBlue(), color.getGreen(), color.getAlpha());
+                    putData(buf, el, color.getRed() / 255f, color.getBlue() / 255f, color.getGreen() / 255f, color.getAlpha() / 255f);
                     break;
                 case UV:
                     switch (el.getIndex()) {
@@ -83,16 +83,22 @@ public class QuadFactory {
                 buf.putFloat(f);
                 break;
             case UNSIGNED_BYTE:
+                buf.put((byte) (f * 255));
+                break;
             case BYTE:
-                buf.put((byte) f);
+                buf.put((byte) (f * 127));
                 break;
             case UNSIGNED_SHORT:
+                buf.putShort((short) (f * 65535));
+                break;
             case SHORT:
-                buf.putShort((short) f);
+                buf.putShort((short) (f * 32767));
                 break;
             case UNSIGNED_INT:
+                buf.putInt((int) (f * 2147483647));
+                break;
             case INT:
-                buf.putInt((int) f);
+                buf.putInt((int) (f * 4294967295L));
                 break;
         }
     }
