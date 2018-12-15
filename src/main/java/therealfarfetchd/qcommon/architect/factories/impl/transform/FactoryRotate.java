@@ -13,7 +13,7 @@ public class FactoryRotate implements TransformFactory {
 
     @Override
     public Value<Transform> parse(ParseContext ctx, JsonObject json) {
-        Value<Vec3> axis = JsonParserUtils.parseVec3(ctx, json, "axis").map(Vec3::getNormalized);
+        Value<Vec3> axis = JsonParserUtils.parseAxisVector(ctx, json, "axis").map(Vec3::getNormalized);
         Value<Float> angle = JsonParserUtils.parseFloat(ctx, json, "angle");
 
         return axis.flatMap(axis1 -> angle.map(angle1 -> f -> f.rotate(axis1, angle1)));

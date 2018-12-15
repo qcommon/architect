@@ -56,6 +56,12 @@ public class ParseContext {
         msg(MsgType.ERROR, message);
     }
 
+    public void into(ParseContext other) {
+        for (Entry entry : l) {
+            other.msg(entry.mt, entry.message);
+        }
+    }
+
     public void printMessages() {
         if (l.isEmpty()) return;
         Architect.INSTANCE.logger.info("Messages for '{}':", task);

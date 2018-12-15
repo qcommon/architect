@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -36,6 +37,8 @@ import therealfarfetchd.qcommon.croco.Vec2;
 import therealfarfetchd.qcommon.croco.Vec3;
 
 public class JsonParserUtils {
+
+    private static final Pattern AXIS_VECTOR = Pattern.compile("^((|[+-])[xyzXYZ])+?$");
 
     private JsonParserUtils() {}
 
@@ -91,6 +94,52 @@ public class JsonParserUtils {
             List<Float> floats = l.stream().map(JsonPrimitive::getAsFloat).collect(Collectors.toList());
             return new Vec3(floats.get(0), floats.get(1), floats.get(2));
         }, fallback);
+    }
+
+    public static Value<Vec3> parseAxisVector(ParseContext ctx, JsonObject root, String tag) {
+        return parseAxisVector(ctx, root, tag, new Vec3(0, 1, 0));
+    }
+
+    public static Value<Vec3> parseAxisVector(ParseContext ctx, JsonObject root, String tag, Vec3 fallback) {
+        ParseContext ctx1 = new ParseContext("temp");
+        ParseContext ctx2 = new ParseContext("temp");
+        Value<Vec3> v = parseVec3(ctx1, root, tag, fallback);
+        if (ctx1.isResultValid()) return v;
+        ctx1.into(ctx2);
+        ctx1 = new ParseContext("temp");
+        v = parseGenString(ctx1, root, tag, "an axis vector", s -> AXIS_VECTOR.matcher(s).matches(), s -> {
+            Vec3 vec = Vec3.ORIGIN;
+            int i = 1;
+            for (char c : s.toCharArray()) {
+                switch (c) {
+                    case '+':
+                        break;
+                    case '-':
+                        i = -1;
+                        break;
+                    case 'x':
+                    case 'X':
+                        vec = vec.add(new Vec3(i, 0, 0));
+                        i = 1;
+                        break;
+                    case 'y':
+                    case 'Y':
+                        vec = vec.add(new Vec3(0, i, 0));
+                        i = 1;
+                        break;
+                    case 'z':
+                    case 'Z':
+                        vec = vec.add(new Vec3(0, 0, i));
+                        i = 1;
+                        break;
+                }
+            }
+            return vec.getNormalized();
+        }, fallback);
+        if (ctx1.isResultValid()) return v;
+        ctx1.into(ctx2);
+        ctx2.into(ctx);
+        return Value.wrap(fallback);
     }
 
     public static Value<Vec2> parseVec2(ParseContext ctx, JsonObject root, String tag) {
