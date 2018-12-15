@@ -9,6 +9,7 @@ import net.minecraft.client.render.model.ModelRotationContainer;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.render.model.json.ModelItemPropertyOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformations;
+import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -53,6 +55,8 @@ public class BlockModel implements UnbakedModel {
         TextureMapper tm = model.getTextureMapper().get(sp);
         Function<String, Identifier> tmapper = s -> select(tm.getTexture(s), TextureRef.PLACEHOLDER.texture);
 
+        requiredTextures.add(TextureRef.PLACEHOLDER.texture);
+
         model.getParts().getPossibleValues().parallelStream()
             .flatMap(Collection::parallelStream)
             .flatMap($ -> $.getFaces().parallelStream())
@@ -75,8 +79,11 @@ public class BlockModel implements UnbakedModel {
     public BakedModel bake(ModelLoader loader, Function<Identifier, Sprite> getTexture, ModelRotationContainer rc) {
         TextureMapper tm = model.getTextureMapper().get(sp);
 
-        Function<TextureRef, Sprite> mapper = tr -> getTexture.apply(tr.getTexture(tm));
-        Sprite particle = getTexture.apply(select(tm.getTexture("particle"), TextureRef.PLACEHOLDER.texture));
+        Sprite placeholder = getTexture.apply(TextureRef.PLACEHOLDER.texture);
+        Function<Identifier, Sprite> getTextureFixed = id -> select(getTexture.apply(id), s -> s != MissingSprite.getMissingSprite(), placeholder);
+
+        Function<TextureRef, Sprite> mapper = tr -> getTextureFixed.apply(tr.getTexture(tm));
+        Sprite particle = getTextureFixed.apply(select(tm.getTexture("particle"), TextureRef.PLACEHOLDER.texture));
 
         List<Quad> quadList = model.getParts().get(sp).parallelStream()
             .flatMap($ -> $.getFaces().parallelStream())
@@ -147,6 +154,10 @@ public class BlockModel implements UnbakedModel {
 
     private static <T> T select(@Nullable T t, T fallback) {
         return t == null ? fallback : t;
+    }
+
+    private static <T> T select(@Nullable T t, Predicate<T> filter, T fallback) {
+        return t == null || !filter.test(t) ? fallback : t;
     }
 
 }
