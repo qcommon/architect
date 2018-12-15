@@ -82,22 +82,22 @@ public class QuadUnpacker {
                     data[i] = buf.getFloat();
                     break;
                 case UNSIGNED_BYTE:
-                    data[i] = buf.get() & 0xFF;
+                    data[i] = (buf.get() & 0xFF) / 255f;
                     break;
                 case BYTE:
-                    data[i] = buf.get();
+                    data[i] = buf.get() / 127f;
                     break;
                 case UNSIGNED_SHORT:
-                    data[i] = buf.getShort() & 0xFFFF;
+                    data[i] = (buf.getShort() & 0xFFFF) / 65535f;
                     break;
                 case SHORT:
-                    data[i] = buf.getShort();
+                    data[i] = buf.getShort() / 32767f;
                     break;
                 case UNSIGNED_INT:
-                    data[i] = buf.getInt() & 0xFFFFFFFFL;
+                    data[i] = (buf.getInt() & 0xFFFFFFFFL) / 4294967295f;
                     break;
                 case INT:
-                    data[i] = buf.getInt();
+                    data[i] = buf.getInt() / 2147483647f;
                     break;
             }
         }

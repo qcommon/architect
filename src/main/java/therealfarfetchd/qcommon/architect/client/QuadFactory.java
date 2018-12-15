@@ -95,10 +95,10 @@ public class QuadFactory {
                 buf.putShort((short) (f * 32767));
                 break;
             case UNSIGNED_INT:
-                buf.putInt((int) (f * 2147483647));
+                buf.putInt((int) (f * 4294967295L));
                 break;
             case INT:
-                buf.putInt((int) (f * 4294967295L));
+                buf.putInt((int) (f * 2147483647));
                 break;
         }
     }
