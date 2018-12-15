@@ -60,12 +60,12 @@ public class FactoryOBJ implements PartFactory {
     private Value<OBJMaterial> applyOverrides(ParseContext ctx, JsonObject json, OBJMaterial orig) {
         Value<OBJMaterial> mat = Value.wrap(orig);
 
-        if (json.has("texture")) {
+        if (JsonParserUtils.hasKey(json, "texture")) {
             Value<String> tex = JsonParserUtils.parseTextureRef(ctx, json, "texture", TextureRef.fromString(orig.diffuseTexture)).map(TextureRef::toStringRepr);
             mat = tex.map(orig::withDiffuseTexture);
         }
 
-        if (json.has("color")) {
+        if (JsonParserUtils.hasKey(json, "color")) {
             Value<Color> color = JsonParserUtils.parseGenPrimitiveArray(ctx, json, "color", "color component", 3,
                 f -> f.isNumber() && f.getAsFloat() >= 0 && f.getAsFloat() <= 1,
                 arr -> new Color(arr.get(0).getAsFloat(), arr.get(1).getAsFloat(), arr.get(2).getAsFloat()),
@@ -74,9 +74,9 @@ public class FactoryOBJ implements PartFactory {
             mat = mat.flatMap(m -> color.map(m::withDiffuse));
         }
 
-        if (json.has("colour")) ctx.warn("no u"); // haha
+        if (JsonParserUtils.hasKey(json, "colour")) ctx.warn("no u"); // haha
 
-        if (json.has("transparency")) {
+        if (JsonParserUtils.hasKey(json, "transparency")) {
             Value<Float> tr = JsonParserUtils.parseGenPrimitive(ctx, json, "transparency", "a number in [0,1]",
                 jsonPrimitive -> jsonPrimitive.isNumber() && jsonPrimitive.getAsFloat() >= 0 && jsonPrimitive.getAsFloat() <= 1,
                 JsonPrimitive::getAsFloat, orig.transparency);

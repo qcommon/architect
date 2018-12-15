@@ -29,8 +29,8 @@ public class FactoryBox implements PartFactory {
         Value<Vec3> from = Value.wrap(FROM);
         Value<Vec3> to = Value.wrap(TO);
 
-        if (json.has("from")) from = JsonParserUtils.parseVec3(ctx, json, "from", FROM);
-        if (json.has("to")) to = JsonParserUtils.parseVec3(ctx, json, "to", TO);
+        if (JsonParserUtils.hasKey(json, "from")) from = JsonParserUtils.parseVec3(ctx, json, "from", FROM);
+        if (JsonParserUtils.hasKey(json, "to")) to = JsonParserUtils.parseVec3(ctx, json, "to", TO);
 
         if (json.has("faces")) {
             JsonObject jo = JsonParserUtils.parseGenObjectStatic(ctx, json, "faces", "an object", $ -> true, $ -> $, new JsonObject());
@@ -54,15 +54,15 @@ public class FactoryBox implements PartFactory {
     }
 
     private Value<BoxFace> parse(ParseContext ctx, Value<BoxFace> current, JsonObject json) {
-        if (json.has("show")) {
+        if (JsonParserUtils.hasKey(json, "show")) {
             current = current.flatMap(face -> JsonParserUtils.parseBoolean(ctx, json, "show").map(face::show));
         }
 
-        if (json.has("texture")) {
+        if (JsonParserUtils.hasKey(json, "texture")) {
             current = current.flatMap(face -> JsonParserUtils.parseTextureRef(ctx, json, "texture").map(face::withTexture));
         }
 
-        if (json.has("uv")) {
+        if (JsonParserUtils.hasKey(json, "uv")) {
             Value<Vec2[]> uvsv = JsonParserUtils.parseGenPrimitiveArray(ctx, json, "uv", "number", 4, JsonPrimitive::isNumber,
                 l -> new Vec2[]{new Vec2(l.get(0).getAsFloat(), l.get(1).getAsFloat()), new Vec2(l.get(2).getAsFloat(), l.get(3).getAsFloat())},
                 new Vec2[]{Vec2.ORIGIN, new Vec2(1, 1)});

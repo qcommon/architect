@@ -407,4 +407,8 @@ public class JsonParserUtils {
         return parseGenStatic(ctx, root, tag, tagType, je -> je.isJsonObject() && test.test(je.getAsJsonObject()), je -> mapper.apply(je.getAsJsonObject()), fallback);
     }
 
+    public static boolean hasKey(JsonObject root, String tag) {
+        return root.has(tag) || root.has(String.format("%s: match", tag));
+    }
+
 }
