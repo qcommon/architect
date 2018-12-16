@@ -7,25 +7,25 @@ import net.minecraftforge.client.model.IModel;
 import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.model.value.VariantStateProvider;
 
-public class BlockModelLoader extends ModelLoaderBase {
+public class ItemModelLoader extends ModelLoaderBase {
 
-    public static final BlockModelLoader INSTANCE = new BlockModelLoader();
+    public static final ItemModelLoader INSTANCE = new ItemModelLoader();
 
     @Override
     protected IModel createModel(ModelResourceLocation modelLocation, Model m) {
         VariantStateProvider vsp = new VariantStateProvider(modelLocation.getVariant());
 
-        return new BlockModel(vsp, m);
+        return new ItemModel(vsp, m);
     }
 
     @Override
     protected boolean preFilterModel(ModelResourceLocation model) {
-        return model.getPath().matches("block/\\w+"); // no special prefix
+        return model.getPath().matches("item/\\w+"); // items only
     }
 
     @Override
     protected ResourceLocation getModelPath(ResourceLocation object) {
-        return new ResourceLocation(object.getNamespace(), String.format("render/%s.json", object.getPath()));
+        return new ResourceLocation(object.getNamespace(), String.format("render/item/%s.json", object.getPath().substring(5)));
     }
 
 }

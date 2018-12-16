@@ -10,8 +10,6 @@ import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public class EmptyModel implements Model {
 
-    public static final EmptyModel INSTANCE = new EmptyModel();
-
     public static final Value<TextureMapper> EMPTY_MAPPER = Value.wrap(unused -> TextureRef.PLACEHOLDER.texture);
 
     @Override

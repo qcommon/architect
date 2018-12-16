@@ -1,5 +1,6 @@
 package therealfarfetchd.qcommon.architect.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -22,16 +23,15 @@ import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.value.StateProvider;
 
-public class BlockModel extends BaseModel {
+public class ItemModel extends BaseModel {
 
-    public BlockModel(StateProvider sp, Model model) {
+    public ItemModel(StateProvider sp, Model model) {
         super(sp, model);
     }
 
     @Override
     public Collection<ResourceLocation> getTextures() {
         Set<ResourceLocation> requiredTextures = new HashSet<>();
-        requiredTextures.add(select(tm.getTexture("particle"), TextureRef.PLACEHOLDER.texture));
         addModelTextures(requiredTextures);
         return requiredTextures;
     }
@@ -39,7 +39,7 @@ public class BlockModel extends BaseModel {
     @Override
     public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         Function<TextureRef, TextureAtlasSprite> mapper = tr -> bakedTextureGetter.apply(tr.getTexture(tm));
-        TextureAtlasSprite particle = bakedTextureGetter.apply(select(tm.getTexture("particle"), TextureRef.PLACEHOLDER.texture));
+        TextureAtlasSprite particle = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
 
         Map<EnumFacing, List<BakedQuad>> quadsMap = getQuads(format, mapper);
 

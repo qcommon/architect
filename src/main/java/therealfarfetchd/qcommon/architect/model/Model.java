@@ -8,8 +8,11 @@ import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public interface Model {
 
+    Model EMPTY = new EmptyModel();
+
     Value<List<Part>> getParts();
 
     Value<TextureMapper> getTextureMapper();
+
 
 }
