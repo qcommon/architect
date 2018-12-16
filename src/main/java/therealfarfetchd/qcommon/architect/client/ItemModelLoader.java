@@ -7,20 +7,20 @@ import net.minecraft.util.Identifier;
 import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.model.value.VariantStateProvider;
 
-public class BlockModelLoader extends ModelLoaderBase {
+public class ItemModelLoader extends ModelLoaderBase {
 
-    public static final BlockModelLoader INSTANCE = new BlockModelLoader();
+    public static final ItemModelLoader INSTANCE = new ItemModelLoader();
 
     @Override
     protected UnbakedModel createModel(ModelIdentifier modelLocation, Model m) {
         VariantStateProvider vsp = new VariantStateProvider(modelLocation.getVariant());
 
-        return new BlockModel(vsp, m);
+        return new ItemModel(vsp, m);
     }
 
     @Override
     protected boolean preFilterModel(ModelIdentifier model) {
-        return model.getPath().matches("block/\\w+"); // no special prefix
+        return model.getPath().matches("item/\\w+"); // no special prefix
     }
 
     @Override

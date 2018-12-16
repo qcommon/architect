@@ -6,7 +6,6 @@ import net.fabricmc.loader.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import therealfarfetchd.qcommon.architect.client.dynrender.shaderbuilder.ShaderBuilder;
 import therealfarfetchd.qcommon.architect.factories.FactoryRegistry;
 import therealfarfetchd.qcommon.architect.proxy.ClientProxy;
 import therealfarfetchd.qcommon.architect.proxy.CommonProxy;

@@ -27,16 +27,15 @@ import therealfarfetchd.qcommon.architect.model.Model;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.value.StateProvider;
 
-public class BlockModel extends BaseModel {
+public class ItemModel extends BaseModel {
 
-    public BlockModel(StateProvider sp, Model model) {
+    public ItemModel(StateProvider sp, Model model) {
         super(sp, model);
     }
 
     @Override
     public Collection<Identifier> getTextureDependencies(Function<Identifier, UnbakedModel> var1, Set<String> var2) {
         Set<Identifier> requiredTextures = new HashSet<>();
-        requiredTextures.add(select(tm.getTexture("particle"), TextureRef.PLACEHOLDER.texture));
         addModelTextures(requiredTextures);
         return requiredTextures;
     }
