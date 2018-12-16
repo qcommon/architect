@@ -20,12 +20,12 @@ public class BlockModelLoader extends ModelLoaderBase {
 
     @Override
     protected boolean preFilterModel(ModelIdentifier model) {
-        return model.getPath().matches("block/\\w+"); // no special prefix
+        return !model.getVariant().equals("inventory"); // no items
     }
 
     @Override
     protected Identifier getModelPath(Identifier object) {
-        return new Identifier(object.getNamespace(), String.format("render/%s.json", object.getPath()));
+        return new Identifier(object.getNamespace(), String.format("render/block/%s.json", object.getPath()));
     }
 
 }

@@ -8,7 +8,7 @@
   "initializer": "therealfarfetchd.qcommon.architect.Architect",
   "authors": ["therealfarfetchd"],
   "requires": {
-    "qcommon-croco": "1.0.3"
+    "qcommon-croco": ">=1.0.3"
   },
   "links": {
     "homepage": "https://github.com/qcommon/architect",

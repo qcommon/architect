@@ -7,7 +7,8 @@ import net.minecraft.util.Identifier;
 public interface CustomModelLoader extends ResourceReloadListener {
 
     CustomModelLoader[] LOADERS = {
-        BlockModelLoader.INSTANCE
+        BlockModelLoader.INSTANCE,
+        ItemModelLoader.INSTANCE
     };
 
     boolean accepts(Identifier id);

@@ -5,7 +5,8 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.util.Identifier;
 
 import therealfarfetchd.qcommon.architect.model.Model;
-import therealfarfetchd.qcommon.architect.model.value.VariantStateProvider;
+import therealfarfetchd.qcommon.architect.model.value.NullStateProvider;
+import therealfarfetchd.qcommon.architect.model.value.StateProvider;
 
 public class ItemModelLoader extends ModelLoaderBase {
 
@@ -13,19 +14,19 @@ public class ItemModelLoader extends ModelLoaderBase {
 
     @Override
     protected UnbakedModel createModel(ModelIdentifier modelLocation, Model m) {
-        VariantStateProvider vsp = new VariantStateProvider(modelLocation.getVariant());
+        StateProvider sp = NullStateProvider.INSTANCE;
 
-        return new ItemModel(vsp, m);
+        return new ItemModel(sp, m);
     }
 
     @Override
     protected boolean preFilterModel(ModelIdentifier model) {
-        return model.getPath().matches("item/\\w+"); // no special prefix
+        return model.getVariant().equals("inventory"); // items only
     }
 
     @Override
     protected Identifier getModelPath(Identifier object) {
-        return new Identifier(object.getNamespace(), String.format("render/%s.json", object.getPath()));
+        return new Identifier(object.getNamespace(), String.format("render/item/%s.json", object.getPath()));
     }
 
 }

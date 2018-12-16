@@ -3,7 +3,6 @@
   "package": "therealfarfetchd.qcommon.architect.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinBlockModels",
     "MixinMinecraftClient",
     "MixinModelLoader"
   ],
