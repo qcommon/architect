@@ -1,8 +1,8 @@
 package therealfarfetchd.qcommon.architect.factories.impl.part;
 
-import com.google.gson.JsonObject;
-
 import net.minecraft.util.Identifier;
+
+import com.google.gson.JsonObject;
 
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
 import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;

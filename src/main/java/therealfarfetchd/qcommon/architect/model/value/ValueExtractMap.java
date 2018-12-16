@@ -1,13 +1,13 @@
 package therealfarfetchd.qcommon.architect.model.value;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 class ValueExtractMap<K, T> implements Value<Map<K, T>> {
 

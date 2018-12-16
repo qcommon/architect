@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import therealfarfetchd.qcommon.architect.Architect;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.loader.SourceFileInfo;
 import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJMaterial;

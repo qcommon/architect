@@ -1,7 +1,5 @@
 package therealfarfetchd.qcommon.architect.client;
 
-import com.google.gson.JsonParser;
-
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.resource.ResourceManager;
@@ -14,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import com.google.gson.JsonParser;
 
 import therealfarfetchd.qcommon.architect.Architect;
 import therealfarfetchd.qcommon.architect.factories.impl.model.DefaultModel;

@@ -1,10 +1,5 @@
 package therealfarfetchd.qcommon.architect.loader;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
 import net.minecraft.util.Identifier;
 
 import java.util.Collections;
@@ -19,6 +14,11 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import javax.annotation.Nullable;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import therealfarfetchd.qcommon.architect.Architect;
 import therealfarfetchd.qcommon.architect.factories.FactoryRegistry;

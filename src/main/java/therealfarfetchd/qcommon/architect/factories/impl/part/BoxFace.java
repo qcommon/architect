@@ -2,12 +2,12 @@ package therealfarfetchd.qcommon.architect.factories.impl.part;
 
 import net.minecraft.util.math.Direction;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.awt.Color;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import therealfarfetchd.qcommon.architect.model.Face;
 import therealfarfetchd.qcommon.architect.model.Quad;

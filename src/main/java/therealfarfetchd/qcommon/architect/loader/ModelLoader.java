@@ -1,10 +1,10 @@
 package therealfarfetchd.qcommon.architect.loader;
 
-import com.google.gson.JsonObject;
-
 import net.minecraft.util.Identifier;
 
 import javax.annotation.Nullable;
+
+import com.google.gson.JsonObject;
 
 import therealfarfetchd.qcommon.architect.factories.FactoryRegistry;
 import therealfarfetchd.qcommon.architect.factories.ModelFactory;

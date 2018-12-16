@@ -1,11 +1,7 @@
 package therealfarfetchd.qcommon.architect.factories;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
-import net.fabricmc.loader.FabricLoader;
 import net.minecraft.util.Identifier;
+import net.fabricmc.loader.FabricLoader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -13,6 +9,10 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 import javax.annotation.Nullable;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import therealfarfetchd.qcommon.architect.Architect;
 import therealfarfetchd.qcommon.architect.loader.ModelLoader;

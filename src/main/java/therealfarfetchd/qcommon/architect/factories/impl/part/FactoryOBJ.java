@@ -1,13 +1,13 @@
 package therealfarfetchd.qcommon.architect.factories.impl.part;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
 import net.minecraft.util.Identifier;
 
 import java.awt.Color;
 import java.util.Map;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
 import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;

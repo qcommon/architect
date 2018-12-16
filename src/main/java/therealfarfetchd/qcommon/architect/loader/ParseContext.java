@@ -1,9 +1,9 @@
 package therealfarfetchd.qcommon.architect.loader;
 
-import org.apache.logging.log4j.Level;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.Level;
 
 import therealfarfetchd.qcommon.architect.Architect;
 

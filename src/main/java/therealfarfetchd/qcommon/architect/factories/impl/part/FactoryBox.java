@@ -1,11 +1,11 @@
 package therealfarfetchd.qcommon.architect.factories.impl.part;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
 import net.minecraft.util.math.Direction;
 
 import java.util.EnumMap;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
 import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;

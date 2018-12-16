@@ -1,13 +1,13 @@
 package therealfarfetchd.qcommon.architect.loader;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.annotation.Nullable;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public abstract class GenLoaderJSON<T> extends GenLoader<T, JsonObject> {
 
