@@ -5,8 +5,6 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +34,7 @@ public abstract class ModelLoaderBase implements CustomModelLoader {
         Identifier model = getModelPath(modelLocation);
         if (models.containsKey(model)) return true;
 
-        boolean fileExists = false;
-        try (InputStream ignored = Architect.proxy.openResource(model, true)) {
-            if (ignored != null) fileExists = true;
-        } catch (IOException ignored) { }
-
-        return fileExists;
+        return Architect.proxy.resourceExists(model, true);
     }
 
     @Override

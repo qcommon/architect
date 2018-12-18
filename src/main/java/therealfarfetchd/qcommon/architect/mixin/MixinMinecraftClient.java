@@ -16,7 +16,8 @@ public abstract class MixinMinecraftClient {
 
     @Inject(
         method = "init()V",
-        at = @At(value = "FIELD",
+        at = @At(
+            value = "FIELD",
             target = "Lnet/minecraft/client/MinecraftClient;spriteAtlas:Lnet/minecraft/client/texture/SpriteAtlasTexture;",
             opcode = Opcodes.PUTFIELD,
             shift = Shift.BEFORE

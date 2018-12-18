@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinMinecraftClient",
-    "MixinModelLoader"
+    "MixinModelLoader",
+    "MixinRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

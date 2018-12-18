@@ -22,6 +22,7 @@ public class Architect implements ModInitializer {
 
     @Override
     public void onInitialize() {
+//        ShaderBuilder.test();
         INSTANCE = this;
         switch (FabricLoader.INSTANCE.getEnvironmentHandler().getEnvironmentType()) {
             case CLIENT:

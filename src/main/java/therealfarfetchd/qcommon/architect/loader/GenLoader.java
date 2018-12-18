@@ -1,26 +1,36 @@
 package therealfarfetchd.qcommon.architect.loader;
 
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import therealfarfetchd.qcommon.architect.Architect;
 
-public abstract class GenLoader<T, S> {
+public abstract class GenLoader<T, S> implements ResourceReloadListener {
 
-    protected GenLoader() { }
+    protected Map<Identifier, T> cache = new HashMap<>();
+
+    protected GenLoader() {
+        Architect.proxy.registerReloadListener(this);
+    }
 
     public abstract T load(ParseContext ctx, SourceFileInfo info, S source);
 
     public T load(ParseContext ctx, Identifier id) {
-        S source = loadSource(ctx, id);
+        return cache.computeIfAbsent(id, id1 -> {
+            S source = loadSource(ctx, id1);
 
-        if (source == null) return getError();
+            if (source == null) return getError();
 
-        return load(ctx, new SourceFileInfo(id), source);
+            return load(ctx, new SourceFileInfo(id1), source);
+        });
     }
 
     @Nullable
@@ -58,5 +68,10 @@ public abstract class GenLoader<T, S> {
 
     @Nullable
     protected abstract S loadSourceFromStream(ParseContext ctx, InputStream stream);
+
+    @Override
+    public void onResourceReload(ResourceManager var1) {
+        cache.clear();
+    }
 
 }

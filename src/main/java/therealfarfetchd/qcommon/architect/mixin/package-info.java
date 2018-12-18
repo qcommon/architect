@@ -1,0 +1,7 @@
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+package therealfarfetchd.qcommon.architect.mixin;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import therealfarfetchd.qcommon.MethodsReturnNonnullByDefault;
