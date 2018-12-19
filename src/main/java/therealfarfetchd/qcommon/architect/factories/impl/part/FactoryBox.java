@@ -63,7 +63,7 @@ public class FactoryBox implements PartFactory {
 
         if (ctx.dp.hasKey(json, "uv")) {
             Value<Vec2[]> uvsv = ctx.dp.parseGenPrimitiveArray(ctx.log, json, "uv", "number", 4, JsonPrimitive::isNumber,
-                l -> new Vec2[]{new Vec2(l.get(0).getAsFloat(), l.get(1).getAsFloat()), new Vec2(l.get(2).getAsFloat(), l.get(3).getAsFloat())},
+                l -> new Vec2[]{new Vec2(l.get(0).getAsFloat() / ctx.posScale, l.get(1).getAsFloat() / ctx.posScale), new Vec2(l.get(2).getAsFloat() / ctx.posScale, l.get(3).getAsFloat() / ctx.posScale)},
                 new Vec2[]{Vec2.ORIGIN, new Vec2(1, 1)});
             current = current.flatMap($ -> uvsv.map(uvs -> $.withUV(uvs[0], uvs[1])));
         }
