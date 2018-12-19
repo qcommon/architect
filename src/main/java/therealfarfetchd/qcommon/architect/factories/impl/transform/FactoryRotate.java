@@ -3,7 +3,6 @@ package therealfarfetchd.qcommon.architect.factories.impl.transform;
 import com.google.gson.JsonObject;
 
 import therealfarfetchd.qcommon.architect.factories.TransformFactory;
-import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.model.AffineTransform;
 import therealfarfetchd.qcommon.architect.model.Transform;
@@ -15,8 +14,8 @@ public class FactoryRotate implements TransformFactory {
 
     @Override
     public Value<Transform> parse(ParseContext ctx, JsonObject json) {
-        Value<Vec3> axis = JsonParserUtils.parseAxisVector(ctx, json, "axis").map(Vec3::getNormalized);
-        Value<Float> angle = JsonParserUtils.parseFloat(ctx, json, "angle");
+        Value<Vec3> axis = ctx.dp.parseAxisVector(ctx.log, json, "axis").map(Vec3::getNormalized);
+        Value<Float> angle = ctx.dp.parseFloat(ctx.log, json, "angle");
 
         return axis.flatMap(axis1 -> angle.map(angle1 -> AffineTransform.of(Mat4.IDENTITY.rotate(axis1.x, axis1.y, axis1.z, angle1))));
     }

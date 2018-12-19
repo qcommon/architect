@@ -15,32 +15,38 @@ public class ModelLoader extends GenLoaderJSON<Model> {
     public static final ModelLoader INSTANCE = new ModelLoader();
 
     @Override
-    public Model load(ParseContext ctx, SourceFileInfo info, JsonObject json) {
+    public Model load(ParseMessageContainer log, SourceFileInfo info, JsonObject json) {
+        ParseContext ctx = ParseContext.wrap(log);
+
+        if (json.has("scale")) {
+            ctx = ctx.withScale(ctx.dp.parseFloatStatic(ctx.log, json, "scale", ctx.posScale));
+        }
+
         if (json.has("parent")) {
             Identifier fallback = new Identifier("empty");
-            Identifier id = JsonParserUtils.parseGenStringStatic(ctx, json, "parent", "a model location", s -> true, Identifier::new, fallback);
+            Identifier id = ctx.dp.parseGenStringStatic(log, json, "parent", "a model location", s -> true, Identifier::new, fallback);
             if (id == fallback) return Model.EMPTY;
             Identifier fixed = new Identifier(id.getNamespace(), String.format("render/%s.json", id.getPath()));
             Model parent = load(fixed);
-            return parent != null ? merge(ctx, info, json, parent) : Model.EMPTY;
+            return parent != null ? merge(log, info, json, parent) : Model.EMPTY;
         }
 
         Identifier id = new Identifier("minecraft", "default");
         if (json.has("type")) {
-            id = JsonParserUtils.parseGenStringStatic(ctx, json, "type", "a model type", s -> true, Identifier::new, id);
+            id = ctx.dp.parseGenStringStatic(ctx.log, json, "type", "a model type", s -> true, Identifier::new, id);
         }
 
         ModelFactory mf = FactoryRegistry.INSTANCE.getModelFactory(id);
 
         if (mf == null) {
-            ctx.error(String.format("Invalid model type '%s'", id));
+            log.error(String.format("Invalid model type '%s'", id));
             return Model.EMPTY;
         }
 
         return mf.parse(ctx, json);
     }
 
-    public Model merge(ParseContext ctx, SourceFileInfo info, JsonObject json, Model parent) {
+    public Model merge(ParseMessageContainer log, SourceFileInfo info, JsonObject json, Model parent) {
         // TODO
         return parent;
     }
@@ -57,8 +63,8 @@ public class ModelLoader extends GenLoaderJSON<Model> {
 
     @Nullable
     @Override
-    public JsonObject loadSource(ParseContext ctx, Identifier rl) {
-        return super.loadSource(ctx, rl);
+    public JsonObject loadSource(ParseMessageContainer log, Identifier rl) {
+        return super.loadSource(log, rl);
     }
 
 }

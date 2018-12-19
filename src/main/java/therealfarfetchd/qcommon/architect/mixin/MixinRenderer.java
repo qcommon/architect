@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import therealfarfetchd.qcommon.architect.client.dynrender.DynRender;
+import therealfarfetchd.qcommon.architect.client.dynrender.DynRender.InputProvider;
 import therealfarfetchd.qcommon.architect.client.dynrender.DynRenderProvider;
 
 @Mixin(Renderer.class)
@@ -35,7 +36,7 @@ public abstract class MixinRenderer {
             Collection<BlockPos> positions = entry.getValue();
 
             for (BlockPos pos : positions) {
-                dr.draw(i -> null, var1, var3, pos.getX() - var1.x, pos.getY() - var1.y, pos.getZ() - var1.z);
+                dr.draw(InputProvider.NULL, var1, var3, pos.getX() - var1.x, pos.getY() - var1.y, pos.getZ() - var1.z);
             }
         }
     }

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import therealfarfetchd.qcommon.architect.loader.ParseContext;
+import therealfarfetchd.qcommon.architect.loader.ParseMessageContainer;
 import therealfarfetchd.qcommon.architect.loader.SourceFileInfo;
 import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJFace;
 import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJMaterial;
@@ -25,7 +25,7 @@ public class OBJLoader extends OBJLoaderBase<OBJRoot> {
     public static final OBJLoader INSTANCE = new OBJLoader();
 
     @Override
-    public OBJRoot load(ParseContext ctx, SourceFileInfo info, List<String> source) {
+    public OBJRoot load(ParseMessageContainer log, SourceFileInfo info, List<String> source) {
         Map<String, OBJMaterial> materials = new HashMap<>();
         List<Vec3> vertPos = new ArrayList<>();
         List<Vec3> vertTex = new ArrayList<>();
@@ -66,7 +66,7 @@ public class OBJLoader extends OBJLoaderBase<OBJRoot> {
                     break;
                 }
                 case "g": {
-                    if (objname == null) ctx.warn("No active object, ignoring group definition");
+                    if (objname == null) log.warn("No active object, ignoring group definition");
                     else objgroups.addAll(readCustom(it, 1, 1, -1));
                     break;
                 }
@@ -98,7 +98,7 @@ public class OBJLoader extends OBJLoaderBase<OBJRoot> {
                     break;
                 }
                 default: {
-                    ctx.warn(String.format("Unrecognized OBJ statement '%s'", it));
+                    log.warn(String.format("Unrecognized OBJ statement '%s'", it));
                 }
             }
         }

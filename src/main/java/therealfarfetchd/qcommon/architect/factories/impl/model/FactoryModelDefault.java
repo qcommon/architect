@@ -12,7 +12,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import therealfarfetchd.qcommon.architect.factories.ModelFactory;
-import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.model.EmptyModel;
 import therealfarfetchd.qcommon.architect.model.Model;
@@ -32,16 +31,16 @@ public class FactoryModelDefault implements ModelFactory {
         Value<TextureMapper> texs = EmptyModel.EMPTY_MAPPER;
 
         if (json.has("parts")) {
-            JsonParserUtils.parseGenObjectArrayStatic(ctx, json, "parts", "part", -1, $ -> true,
-                l -> l.stream().map(jo -> JsonParserUtils.parsePart(ctx, jo)), Stream.<Value<Part>>empty()).forEach(parts::add);
+            ctx.dp.parseGenObjectArrayStatic(ctx.log, json, "parts", "part", -1, $ -> true,
+                l -> l.stream().map(jo -> ctx.dp.parsePart(ctx.log, jo)), Stream.<Value<Part>>empty()).forEach(parts::add);
         }
 
         if (json.has("textures")) {
-            JsonObject jo = JsonParserUtils.parseGenObjectStatic(ctx, json, "textures", "a texture definition map", $ -> true, $ -> $, new JsonObject());
+            JsonObject jo = ctx.dp.parseGenObjectStatic(ctx.log, json, "textures", "a texture definition map", $ -> true, $ -> $, new JsonObject());
 
             Map<String, Value<TextureRef>> map = new HashMap<>();
             for (Map.Entry<String, JsonElement> entry : jo.entrySet()) {
-                Value<TextureRef> vt = JsonParserUtils.parseTextureRef(ctx, jo, entry.getKey());
+                Value<TextureRef> vt = ctx.dp.parseTextureRef(ctx.log, jo, entry.getKey());
                 map.put(entry.getKey(), vt);
             }
 
@@ -63,7 +62,7 @@ public class FactoryModelDefault implements ModelFactory {
                             final String newTexKey = ((TextureRefKey) tr).key;
 
                             if (tried.contains(newTexKey)) {
-                                ctx.error(String.format("Circular dependency for texture %s: %s -> %s", s, String.join(" -> ", tried), newTexKey));
+                                ctx.log.error(String.format("Circular dependency for texture %s: %s -> %s", s, String.join(" -> ", tried), newTexKey));
                                 break;
                             }
 
@@ -71,13 +70,13 @@ public class FactoryModelDefault implements ModelFactory {
                             tried.add(newTexKey);
 
                             if (tr1 == null) {
-                                ctx.error(String.format("Texture %s resolves to non existing texture %s", s, newTexKey));
+                                ctx.log.error(String.format("Texture %s resolves to non existing texture %s", s, newTexKey));
                                 break;
                             }
 
                             tr = tr1;
                         } else {
-                            ctx.error(String.format("Unhandled texture reference type %s for texture %s", tr.getClass().getName(), s));
+                            ctx.log.error(String.format("Unhandled texture reference type %s for texture %s", tr.getClass().getName(), s));
                             break;
                         }
                     }

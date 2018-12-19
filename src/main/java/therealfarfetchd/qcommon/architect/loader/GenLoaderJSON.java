@@ -17,12 +17,12 @@ public abstract class GenLoaderJSON<T> extends GenLoader<T, JsonObject> {
 
     @Nullable
     @Override
-    protected JsonObject loadSourceFromStream(ParseContext ctx, InputStream stream) {
+    protected JsonObject loadSourceFromStream(ParseMessageContainer log, InputStream stream) {
         JsonElement el = json.parse(new InputStreamReader(stream));
         if (el.isJsonObject()) {
             return el.getAsJsonObject();
         } else {
-            ctx.error("Root tag is not an object");
+            log.error("Root tag is not an object");
             return null;
         }
     }

@@ -21,24 +21,24 @@ public abstract class GenLoader<T, S> implements ResourceReloadListener {
         Architect.proxy.registerReloadListener(this);
     }
 
-    public abstract T load(ParseContext ctx, SourceFileInfo info, S source);
+    public abstract T load(ParseMessageContainer log, SourceFileInfo info, S source);
 
-    public T load(ParseContext ctx, Identifier id) {
+    public T load(ParseMessageContainer log, Identifier id) {
         return cache.computeIfAbsent(id, id1 -> {
-            S source = loadSource(ctx, id1);
+            S source = loadSource(log, id1);
 
             if (source == null) return getError();
 
-            return load(ctx, new SourceFileInfo(id1), source);
+            return load(log, new SourceFileInfo(id1), source);
         });
     }
 
     @Nullable
     public T load(Identifier rl) {
-        ParseContext ctx = new ParseContext(String.format("%s '%s'", getTypeName(), SourceFileInfo.getFileName(rl)));
-        T m = load(ctx, rl);
-        ctx.printMessages();
-        return ctx.isResultValid() ? m : null;
+        ParseMessageContainer log = new ParseMessageContainer(String.format("%s '%s'", getTypeName(), SourceFileInfo.getFileName(rl)));
+        T m = load(log, rl);
+        log.printMessages();
+        return log.isResultValid() ? m : null;
     }
 
     protected abstract T getError();
@@ -46,28 +46,28 @@ public abstract class GenLoader<T, S> implements ResourceReloadListener {
     protected abstract String getTypeName();
 
     @Nullable
-    protected S loadSource(ParseContext ctx, Identifier id) {
+    protected S loadSource(ParseMessageContainer log, Identifier id) {
         S source = null;
         try (InputStream istr = Architect.proxy.openResource(id, true)) {
             if (istr == null) {
-                ctx.error(String.format("Could not open file '%s'", id));
+                log.error(String.format("Could not open file '%s'", id));
                 return null;
             }
-            source = loadSourceFromStream(ctx, istr);
+            source = loadSourceFromStream(log, istr);
         } catch (IOException e) {
             e.printStackTrace();
             if (source == null) {
-                ctx.error("Failed to load file: " + e.getMessage());
+                log.error("Failed to load file: " + e.getMessage());
                 return null;
             } else {
-                ctx.warn(String.format("An exception occurred while loading the file: %s. We got data nonetheless, ignoring.", e.getMessage()));
+                log.warn(String.format("An exception occurred while loading the file: %s. We got data nonetheless, ignoring.", e.getMessage()));
             }
         }
         return source;
     }
 
     @Nullable
-    protected abstract S loadSourceFromStream(ParseContext ctx, InputStream stream);
+    protected abstract S loadSourceFromStream(ParseMessageContainer log, InputStream stream);
 
     @Override
     public void onResourceReload(ResourceManager var1) {

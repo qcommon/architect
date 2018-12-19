@@ -29,7 +29,7 @@ public class DynRenderImpl implements DynRender {
     }
 
     @Override
-    public void draw(InputProvider ip, Entity camera, float delta, float x, float y, float z) {
+    public void draw(InputProvider ip, Entity camera, float delta, double x, double y, double z) {
         if (!isValid()) throw new IllegalStateException("Dynamic renderer not valid!");
 
         glUseProgram(prog);

@@ -7,5 +7,7 @@ import therealfarfetchd.qcommon.architect.model.Transform;
 import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public interface TransformFactory {
+
     Value<Transform> parse(ParseContext ctx, JsonObject json);
+
 }
