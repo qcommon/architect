@@ -7,5 +7,7 @@ import therealfarfetchd.qcommon.architect.model.part.Part;
 import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public interface PartFactory {
+
     Value<Part> parse(ParseContext ctx, JsonObject json);
+
 }

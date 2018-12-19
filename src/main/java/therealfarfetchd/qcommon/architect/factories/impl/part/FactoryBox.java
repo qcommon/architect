@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
-import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.model.part.Part;
 import therealfarfetchd.qcommon.architect.model.part.PartBox;
@@ -29,11 +28,11 @@ public class FactoryBox implements PartFactory {
         Value<Vec3> from = Value.wrap(FROM);
         Value<Vec3> to = Value.wrap(TO);
 
-        if (JsonParserUtils.hasKey(json, "from")) from = JsonParserUtils.parseVec3(ctx, json, "from", FROM);
-        if (JsonParserUtils.hasKey(json, "to")) to = JsonParserUtils.parseVec3(ctx, json, "to", TO);
+        if (ctx.dp.hasKey(json, "from")) from = ctx.dp.parseCoords3D(ctx.log, json, "from", FROM);
+        if (ctx.dp.hasKey(json, "to")) to = ctx.dp.parseCoords3D(ctx.log, json, "to", TO);
 
         if (json.has("faces")) {
-            JsonObject jo = JsonParserUtils.parseGenObjectStatic(ctx, json, "faces", "an object", $ -> true, $ -> $, new JsonObject());
+            JsonObject jo = ctx.dp.parseGenObjectStatic(ctx.log, json, "faces", "an object", $ -> true, $ -> $, new JsonObject());
 
             for (Direction f : Direction.values()) {
                 em.put(f, apply(ctx, em.get(f), jo, "all"));
@@ -49,21 +48,21 @@ public class FactoryBox implements PartFactory {
 
     private Value<BoxFace> apply(ParseContext ctx, Value<BoxFace> current, JsonObject json, String key) {
         if (json.has(key)) {
-            return JsonParserUtils.parseGenObjectStatic(ctx, json, key, "a face definition", $ -> true, jo -> parse(ctx, current, jo), current);
+            return ctx.dp.parseGenObjectStatic(ctx.log, json, key, "a face definition", $ -> true, jo -> parse(ctx, current, jo), current);
         } else return current;
     }
 
     private Value<BoxFace> parse(ParseContext ctx, Value<BoxFace> current, JsonObject json) {
-        if (JsonParserUtils.hasKey(json, "show")) {
-            current = current.flatMap(face -> JsonParserUtils.parseBoolean(ctx, json, "show").map(face::show));
+        if (ctx.dp.hasKey(json, "show")) {
+            current = current.flatMap(face -> ctx.dp.parseBoolean(ctx.log, json, "show").map(face::show));
         }
 
-        if (JsonParserUtils.hasKey(json, "texture")) {
-            current = current.flatMap(face -> JsonParserUtils.parseTextureRef(ctx, json, "texture").map(face::withTexture));
+        if (ctx.dp.hasKey(json, "texture")) {
+            current = current.flatMap(face -> ctx.dp.parseTextureRef(ctx.log, json, "texture").map(face::withTexture));
         }
 
-        if (JsonParserUtils.hasKey(json, "uv")) {
-            Value<Vec2[]> uvsv = JsonParserUtils.parseGenPrimitiveArray(ctx, json, "uv", "number", 4, JsonPrimitive::isNumber,
+        if (ctx.dp.hasKey(json, "uv")) {
+            Value<Vec2[]> uvsv = ctx.dp.parseGenPrimitiveArray(ctx.log, json, "uv", "number", 4, JsonPrimitive::isNumber,
                 l -> new Vec2[]{new Vec2(l.get(0).getAsFloat(), l.get(1).getAsFloat()), new Vec2(l.get(2).getAsFloat(), l.get(3).getAsFloat())},
                 new Vec2[]{Vec2.ORIGIN, new Vec2(1, 1)});
             current = current.flatMap($ -> uvsv.map(uvs -> $.withUV(uvs[0], uvs[1])));

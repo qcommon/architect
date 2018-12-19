@@ -16,7 +16,7 @@ import com.google.gson.JsonPrimitive;
 
 import therealfarfetchd.qcommon.architect.Architect;
 import therealfarfetchd.qcommon.architect.loader.ModelLoader;
-import therealfarfetchd.qcommon.architect.loader.ParseContext;
+import therealfarfetchd.qcommon.architect.loader.ParseMessageContainer;
 
 public class FactoryRegistry {
 
@@ -67,7 +67,7 @@ public class FactoryRegistry {
         return models.get(id);
     }
 
-    private void readFactoryDefinitions(ParseContext ctx, String modid, JsonObject json) {
+    private void readFactoryDefinitions(ParseMessageContainer ctx, String modid, JsonObject json) {
         readDefinitionPart(ctx, modid, json, "transforms", "transform", TransformFactory.class, this::registerTransformFactory);
         readDefinitionPart(ctx, modid, json, "parts", "part", PartFactory.class, this::registerPartFactory);
         readDefinitionPart(ctx, modid, json, "models", "model", ModelFactory.class, this::registerModelFactory);
@@ -79,7 +79,7 @@ public class FactoryRegistry {
 
     private void readFactoryDefinitions(String modid) {
         Identifier id = new Identifier(modid, "render/_factories.json");
-        ParseContext ctx = new ParseContext(String.format("'%s' factories", modid));
+        ParseMessageContainer ctx = new ParseMessageContainer(String.format("'%s' factories", modid));
         JsonObject obj = ModelLoader.INSTANCE.loadSource(ctx, id);
         if (ctx.isResultValid()) {
             assert obj != null;
@@ -92,7 +92,7 @@ public class FactoryRegistry {
         FabricLoader.INSTANCE.getMods().forEach(mc -> readFactoryDefinitions(mc.getInfo().getId()));
     }
 
-    private <T> void readDefinitionPart(ParseContext ctx, String modid, JsonObject json, String key, String typeSpec, Class<T> clazz, BiConsumer<Identifier, T> register) {
+    private <T> void readDefinitionPart(ParseMessageContainer ctx, String modid, JsonObject json, String key, String typeSpec, Class<T> clazz, BiConsumer<Identifier, T> register) {
         if (json.has(key)) {
             final JsonElement transforms = json.get(key);
             if (transforms.isJsonObject()) {
@@ -104,7 +104,7 @@ public class FactoryRegistry {
         }
     }
 
-    private <T> void readGenDefinitions(ParseContext ctx, String modid, JsonObject json, Class<T> clazz, String typeSpec, BiConsumer<Identifier, T> register) {
+    private <T> void readGenDefinitions(ParseMessageContainer ctx, String modid, JsonObject json, Class<T> clazz, String typeSpec, BiConsumer<Identifier, T> register) {
         for (Map.Entry<String, JsonElement> e : json.entrySet()) {
             final String name = e.getKey();
             Identifier id;

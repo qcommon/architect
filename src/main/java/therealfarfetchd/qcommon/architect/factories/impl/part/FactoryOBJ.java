@@ -10,7 +10,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
-import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.loader.obj.OBJLoader;
 import therealfarfetchd.qcommon.architect.loader.obj.PreparedOBJ;
@@ -25,27 +24,27 @@ public class FactoryOBJ implements PartFactory {
 
     @Override
     public Value<Part> parse(ParseContext ctx, JsonObject json) {
-        Identifier rl = JsonParserUtils.parseGenStringStatic(ctx, json, "model", "an OBJ model location", $ -> true, Identifier::new, new Identifier("qcommon-architect:empty"));
+        Identifier rl = ctx.dp.parseGenStringStatic(ctx.log, json, "model", "an OBJ model location", $ -> true, Identifier::new, new Identifier("qcommon-architect:empty"));
         rl = new Identifier(rl.getNamespace(), String.format("render/obj/%s.obj", rl.getPath()));
 
         OBJRoot objIn = OBJLoader.INSTANCE.load(rl);
 
         if (objIn == null) {
-            ctx.error("Failed to load OBJ model.");
+            ctx.log.error("Failed to load OBJ model.");
             return Value.wrap(Part.EMPTY);
         }
 
         Value<OBJRoot> obj = Value.wrap(objIn);
 
         if (json.has("materials")) {
-            JsonObject jo = JsonParserUtils.parseGenObjectStatic(ctx, json, "materials", "an object", $ -> true, $ -> $, new JsonObject());
+            JsonObject jo = ctx.dp.parseGenObjectStatic(ctx.log, json, "materials", "an object", $ -> true, $ -> $, new JsonObject());
             for (Map.Entry<String, JsonElement> entry : jo.entrySet()) {
                 String key = entry.getKey();
                 if (objIn.materials.containsKey(key)) {
-                    Value<OBJMaterial> mat = JsonParserUtils.parseGenObjectStatic(ctx, jo, key, "a material override", $ -> true, jo1 -> applyOverrides(ctx, jo1, objIn.materials.get(key)), Value.wrap(objIn.materials.get(key)));
+                    Value<OBJMaterial> mat = ctx.dp.parseGenObjectStatic(ctx.log, jo, key, "a material override", $ -> true, jo1 -> applyOverrides(ctx, jo1, objIn.materials.get(key)), Value.wrap(objIn.materials.get(key)));
                     obj = obj.flatMap(o -> mat.map(m -> o.withMaterial(key, m)));
                 } else {
-                    ctx.warn(String.format("Override for non-existing material '%s'. Ignoring", key));
+                    ctx.log.warn(String.format("Override for non-existing material '%s'. Ignoring", key));
                 }
             }
         }
@@ -60,13 +59,13 @@ public class FactoryOBJ implements PartFactory {
     private Value<OBJMaterial> applyOverrides(ParseContext ctx, JsonObject json, OBJMaterial orig) {
         Value<OBJMaterial> mat = Value.wrap(orig);
 
-        if (JsonParserUtils.hasKey(json, "texture")) {
-            Value<String> tex = JsonParserUtils.parseTextureRef(ctx, json, "texture", TextureRef.fromString(orig.diffuseTexture)).map(TextureRef::toStringRepr);
+        if (ctx.dp.hasKey(json, "texture")) {
+            Value<String> tex = ctx.dp.parseTextureRef(ctx.log, json, "texture", TextureRef.fromString(orig.diffuseTexture)).map(TextureRef::toStringRepr);
             mat = tex.map(orig::withDiffuseTexture);
         }
 
-        if (JsonParserUtils.hasKey(json, "color")) {
-            Value<Color> color = JsonParserUtils.parseGenPrimitiveArray(ctx, json, "color", "color component", 3,
+        if (ctx.dp.hasKey(json, "color")) {
+            Value<Color> color = ctx.dp.parseGenPrimitiveArray(ctx.log, json, "color", "color component", 3,
                 f -> f.isNumber() && f.getAsFloat() >= 0 && f.getAsFloat() <= 1,
                 arr -> new Color(arr.get(0).getAsFloat(), arr.get(1).getAsFloat(), arr.get(2).getAsFloat()),
                 orig.diffuse);
@@ -74,10 +73,10 @@ public class FactoryOBJ implements PartFactory {
             mat = mat.flatMap(m -> color.map(m::withDiffuse));
         }
 
-        if (JsonParserUtils.hasKey(json, "colour")) ctx.warn("no u"); // haha
+        if (ctx.dp.hasKey(json, "colour")) ctx.log.warn("no u"); // haha
 
-        if (JsonParserUtils.hasKey(json, "transparency")) {
-            Value<Float> tr = JsonParserUtils.parseGenPrimitive(ctx, json, "transparency", "a number in [0,1]",
+        if (ctx.dp.hasKey(json, "transparency")) {
+            Value<Float> tr = ctx.dp.parseGenPrimitive(ctx.log, json, "transparency", "a number in [0,1]",
                 jsonPrimitive -> jsonPrimitive.isNumber() && jsonPrimitive.getAsFloat() >= 0 && jsonPrimitive.getAsFloat() <= 1,
                 JsonPrimitive::getAsFloat, orig.transparency);
 

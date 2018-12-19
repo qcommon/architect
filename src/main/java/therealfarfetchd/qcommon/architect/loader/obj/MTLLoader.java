@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import therealfarfetchd.qcommon.architect.loader.ParseContext;
+import therealfarfetchd.qcommon.architect.loader.ParseMessageContainer;
 import therealfarfetchd.qcommon.architect.loader.SourceFileInfo;
 import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJMaterial;
 
@@ -18,7 +18,7 @@ public class MTLLoader extends OBJLoaderBase<Map<String, OBJMaterial>> {
     public static MTLLoader INSTANCE = new MTLLoader();
 
     @Override
-    public Map<String, OBJMaterial> load(ParseContext ctx, SourceFileInfo info, List<String> source) {
+    public Map<String, OBJMaterial> load(ParseMessageContainer log, SourceFileInfo info, List<String> source) {
         Map<String, OBJMaterial> mats = new HashMap<>();
 
         String name = "";
@@ -41,7 +41,7 @@ public class MTLLoader extends OBJLoaderBase<Map<String, OBJMaterial>> {
             }
 
             if (mat == null) {
-                ctx.warn(String.format("Ignoring line '%s' because no material is currently being defined", it));
+                log.warn(String.format("Ignoring line '%s' because no material is currently being defined", it));
                 continue;
             }
 
@@ -64,7 +64,7 @@ public class MTLLoader extends OBJLoaderBase<Map<String, OBJMaterial>> {
                     break;
                 }
                 default: {
-                    ctx.warn(String.format("Unrecognized/unimplemented MTL statement '%s'", it));
+                    log.warn(String.format("Unrecognized/unimplemented MTL statement '%s'", it));
                 }
             }
 

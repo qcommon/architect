@@ -10,8 +10,14 @@ public class PartLoader extends GenLoaderJSON<Value<Part>> {
     public static final PartLoader INSTANCE = new PartLoader();
 
     @Override
-    public Value<Part> load(ParseContext ctx, SourceFileInfo info, JsonObject json) {
-        return JsonParserUtils.parsePart(ctx, json);
+    public Value<Part> load(ParseMessageContainer log, SourceFileInfo info, JsonObject json) {
+        ParseContext ctx = ParseContext.wrap(log);
+
+        if (json.has("scale")) {
+            ctx = ctx.withScale(ctx.dp.parseFloatStatic(ctx.log, json, "scale", ctx.posScale));
+        }
+
+        return ctx.dp.parsePart(ctx.log, json);
     }
 
     @Override

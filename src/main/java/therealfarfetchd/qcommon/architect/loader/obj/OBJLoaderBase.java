@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 import therealfarfetchd.qcommon.architect.loader.GenLoader;
-import therealfarfetchd.qcommon.architect.loader.ParseContext;
+import therealfarfetchd.qcommon.architect.loader.ParseMessageContainer;
 
 public abstract class OBJLoaderBase<T> extends GenLoader<T, List<String>> {
 
@@ -19,7 +19,7 @@ public abstract class OBJLoaderBase<T> extends GenLoader<T, List<String>> {
 
     @Nullable
     @Override
-    protected List<String> loadSourceFromStream(ParseContext ctx, InputStream stream) {
+    protected List<String> loadSourceFromStream(ParseMessageContainer log, InputStream stream) {
         List<String> lines = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {

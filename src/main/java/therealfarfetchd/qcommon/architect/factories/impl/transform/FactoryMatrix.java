@@ -3,7 +3,6 @@ package therealfarfetchd.qcommon.architect.factories.impl.transform;
 import com.google.gson.JsonObject;
 
 import therealfarfetchd.qcommon.architect.factories.TransformFactory;
-import therealfarfetchd.qcommon.architect.loader.JsonParserUtils;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.model.AffineTransform;
 import therealfarfetchd.qcommon.architect.model.Transform;
@@ -14,7 +13,7 @@ public class FactoryMatrix implements TransformFactory {
 
     @Override
     public Value<Transform> parse(ParseContext ctx, JsonObject json) {
-        Value<Mat4> mat = JsonParserUtils.parseMat4(ctx, json, "mat");
+        Value<Mat4> mat = ctx.dp.parseMat4(ctx.log, json, "mat");
 
         return mat.map(AffineTransform::of);
     }
