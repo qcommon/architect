@@ -13,6 +13,7 @@ import therealfarfetchd.qcommon.architect.model.Quad;
 import therealfarfetchd.qcommon.architect.model.Tri;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRefAbsolute;
+import therealfarfetchd.qcommon.architect.model.value.StateProvider;
 
 public class PartOBJ implements Part {
 
@@ -36,7 +37,7 @@ public class PartOBJ implements Part {
     }
 
     @Override
-    public List<Face> getFaces() {
+    public List<Face> getFaces(StateProvider sp) {
         return faces;
     }
 

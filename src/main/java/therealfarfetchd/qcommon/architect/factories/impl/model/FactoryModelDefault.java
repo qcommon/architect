@@ -26,13 +26,13 @@ public class FactoryModelDefault implements ModelFactory {
 
     @Override
     public Model parse(ParseContext ctx, JsonObject json) {
-        List<Value<Part>> parts = new ArrayList<>();
+        List<Part> parts = new ArrayList<>();
 
         Value<TextureMapper> texs = EmptyModel.EMPTY_MAPPER;
 
         if (json.has("parts")) {
             ctx.dp.parseGenObjectArrayStatic(ctx.log, json, "parts", "part", -1, $ -> true,
-                l -> l.stream().map(jo -> ctx.dp.parsePart(ctx.log, jo)), Stream.<Value<Part>>empty()).forEach(parts::add);
+                l -> l.stream().map(jo -> ctx.dp.parsePart(ctx.log, jo)), Stream.<Part>empty()).forEach(parts::add);
         }
 
         if (json.has("textures")) {
@@ -86,7 +86,7 @@ public class FactoryModelDefault implements ModelFactory {
             });
         }
 
-        return new DefaultModel(Value.extract(parts).pull(), texs.pull());
+        return new DefaultModel(parts, texs.pull());
     }
 
 }

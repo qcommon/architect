@@ -117,11 +117,11 @@ public interface DataParser {
 
     Value<TextureRef> parseTextureRef(ParseMessageContainer log, JsonObject root, String tag, TextureRef fallback);
 
-    Value<Part> parsePart(ParseMessageContainer log, JsonObject root, String tag);
+    Part parsePart(ParseMessageContainer log, JsonObject root, String tag);
 
-    Value<Part> parsePart(ParseMessageContainer log, JsonObject root);
+    Part parsePart(ParseMessageContainer log, JsonObject root);
 
-    Value<Transform> parseTransform(ParseMessageContainer log, JsonObject root);
+    Transform parseTransform(ParseMessageContainer log, JsonObject root);
 
     <T> Value<T> parseGen(ParseMessageContainer log, JsonObject root, String tag, String tagType, Predicate<JsonElement> test, Function<JsonElement, T> mapper, T fallback);
 

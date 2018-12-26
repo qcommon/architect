@@ -13,86 +13,61 @@ import therealfarfetchd.qcommon.architect.model.Face;
 import therealfarfetchd.qcommon.architect.model.Quad;
 import therealfarfetchd.qcommon.architect.model.Vertex;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
+import therealfarfetchd.qcommon.architect.model.value.Value;
 import therealfarfetchd.qcommon.croco.Vec2;
 import therealfarfetchd.qcommon.croco.Vec3;
 
 public class BoxFace {
 
-    public final boolean show;
-    public final TextureRef texture;
+    private Value<Boolean> show;
+    private Value<TextureRef> texture;
+    private Value<Optional<Pair<Vec2, Vec2>>> uvs;
 
-    @Nullable public final Pair<Vec2, Vec2> uvs;
-
-    public BoxFace(TextureRef texture) {
-        this(true, texture);
+    public BoxFace() {
+        this.show = Value.wrap(true);
+        this.texture = Value.wrap(TextureRef.PLACEHOLDER);
+        this.uvs = Value.wrap(Optional.empty());
     }
 
-    public BoxFace(TextureRef texture, Vec2 uv1, Vec2 uv2) {
-        this(true, texture, uv1, uv2);
-    }
-
-    public BoxFace(boolean show, TextureRef texture) {
+    public void setShow(Value<Boolean> show) {
         this.show = show;
-        this.texture = texture;
-        this.uvs = null;
     }
 
-    public BoxFace(boolean show, TextureRef texture, Vec2 uv1, Vec2 uv2) {
-        this.show = show;
-        this.texture = texture;
-        this.uvs = Pair.of(uv1, uv2);
+    public Value<Boolean> getShow() {
+        return this.show;
     }
 
-    private BoxFace(boolean show, TextureRef texture, @Nullable Pair<Vec2, Vec2> uvs) {
-        this.show = show;
-        this.texture = texture;
+    public void setUV(Value<Optional<Pair<Vec2, Vec2>>> uvs) {
         this.uvs = uvs;
     }
 
-    public Optional<Face> makeFace(Direction face, Vec3 from, Vec3 to) {
-        if (!show) return Optional.empty();
+    public Value<Optional<Pair<Vec2, Vec2>>> getUVs() {
+        return this.uvs;
+    }
 
+    public void setTexture(Value<TextureRef> texture) {
+        this.texture = texture;
+    }
+
+    public Value<TextureRef> getTexture() {
+        return this.texture;
+    }
+
+    public static Face makeFace(Direction face, TextureRef texture, Vec3 from, Vec3 to, @Nullable Vec2 uv1, @Nullable Vec2 uv2) {
         Vec3[] v = new Vec3[4];
         Vec2[] uv = new Vec2[4];
         getVec(face, from, to, v);
 
-        if (uvs != null) {
-
-            uv[0] = uvs.getLeft();
-            uv[2] = uvs.getRight();
+        if (uv1 != null && uv2 != null) {
+            uv[0] = uv1;
+            uv[2] = uv2;
             uv[1] = new Vec2(uv[0].x, uv[2].y);
             uv[3] = new Vec2(uv[2].x, uv[0].y);
         } else {
             getUV(face, from, to, uv);
         }
 
-        return Optional.of(new Quad(texture, new Vertex(v[0], uv[0]), new Vertex(v[1], uv[1]), new Vertex(v[2], uv[2]), new Vertex(v[3], uv[3]), Color.WHITE));
-    }
-
-    public BoxFace show(boolean show) {
-        if (show == this.show) return this;
-        else return new BoxFace(show, texture, uvs);
-    }
-
-    public BoxFace withUV(Vec2 from, Vec2 to) {
-        return new BoxFace(show, texture, from, to);
-    }
-
-    public BoxFace withAutoUV() {
-        return new BoxFace(show, texture, null);
-    }
-
-    public BoxFace withTexture(TextureRef texture) {
-        return new BoxFace(show, texture, uvs);
-    }
-
-    @Override
-    public String toString() {
-        if (uvs != null) {
-            return String.format("BoxFace(show = %s, texture = %s, uv1 = %s, uv2 = %s)", show, texture, uvs.getLeft(), uvs.getRight());
-        } else {
-            return String.format("BoxFace(show = %s, texture = %s, uv1 = <auto>, uv2 = <auto>)", show, texture);
-        }
+        return new Quad(texture, new Vertex(v[0], uv[0]), new Vertex(v[1], uv[1]), new Vertex(v[2], uv[2]), new Vertex(v[3], uv[3]), Color.WHITE);
     }
 
     private static void getVec(Direction face, Vec3 from, Vec3 to, Vec3[] v) {

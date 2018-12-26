@@ -23,10 +23,8 @@ import com.google.gson.JsonPrimitive;
 import therealfarfetchd.qcommon.architect.factories.FactoryRegistry;
 import therealfarfetchd.qcommon.architect.factories.PartFactory;
 import therealfarfetchd.qcommon.architect.factories.TransformFactory;
-import therealfarfetchd.qcommon.architect.factories.impl.transform.FactoryIdentity;
 import therealfarfetchd.qcommon.architect.model.Transform;
 import therealfarfetchd.qcommon.architect.model.part.Part;
-import therealfarfetchd.qcommon.architect.model.part.PartTransformWrapper;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.value.Matcher;
 import therealfarfetchd.qcommon.architect.model.value.Value;
@@ -152,35 +150,35 @@ public class DataParserImpl implements DataParser {
         return parseGenString(log, root, tag, "a texture name or #-key", $ -> true, TextureRef::fromString, fallback);
     }
 
-    public Value<Part> parsePart(ParseMessageContainer log, JsonObject root, String tag) {
-        return parseGenObjectStatic(log, root, tag, "a part", $ -> true, obj -> parsePart(log, obj), Value.wrap(Part.EMPTY));
+    public Part parsePart(ParseMessageContainer log, JsonObject root, String tag) {
+        return parseGenObjectStatic(log, root, tag, "a part", $ -> true, obj -> parsePart(log, obj), Part.EMPTY);
     }
 
-    public Value<Part> parsePart(ParseMessageContainer log, JsonObject root) {
+    public Part parsePart(ParseMessageContainer log, JsonObject root) {
         PartFactory pf = parseGenStringStatic(log, root, "type", "a part type",
             s -> FactoryRegistry.INSTANCE.getPartFactory(new Identifier(s)) != null,
             s -> FactoryRegistry.INSTANCE.getPartFactory(new Identifier(s)),
-            (p1, p2) -> Value.wrap(Part.EMPTY));
+            (p1, p2) -> Part.EMPTY);
 
-        final Value<Part> part = pf.parse(ParseContext.wrap(this, log), root);
+        final Part part = pf.parse(ParseContext.wrap(this, log), root);
 
         if (root.has("transform")) {
-            Value<List<Transform>> trs = Value.extract(parseGenObjectArrayStatic(log, root, "transform", "transforms", -1,
+            List<Transform> trs = parseGenObjectArrayStatic(log, root, "transform", "transforms", -1,
                 $ -> true,
                 objs -> objs.stream().map(jo1 -> parseTransform(log, jo1)).collect(Collectors.toList()),
-                Collections.emptyList()));
+                Collections.emptyList());
 
-            return trs.flatMap(list -> part.map(p -> new PartTransformWrapper(p, list)));
+            return part.transform(trs);
         } else {
             return part;
         }
     }
 
-    public Value<Transform> parseTransform(ParseMessageContainer log, JsonObject root) {
+    public Transform parseTransform(ParseMessageContainer log, JsonObject root) {
         TransformFactory tf = parseGenStringStatic(log, root, "type", "a transform type",
             s -> FactoryRegistry.INSTANCE.getTransformFactory(new Identifier(s)) != null,
             s -> FactoryRegistry.INSTANCE.getTransformFactory(new Identifier(s)),
-            (p1, p2) -> FactoryIdentity.IDENTITY_V);
+            (p1, p2) -> Transform.IDENTITY);
 
         return tf.parse(ParseContext.wrap(this, log), root);
     }

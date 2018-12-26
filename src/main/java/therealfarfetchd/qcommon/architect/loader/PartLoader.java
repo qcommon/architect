@@ -3,14 +3,13 @@ package therealfarfetchd.qcommon.architect.loader;
 import com.google.gson.JsonObject;
 
 import therealfarfetchd.qcommon.architect.model.part.Part;
-import therealfarfetchd.qcommon.architect.model.value.Value;
 
-public class PartLoader extends GenLoaderJSON<Value<Part>> {
+public class PartLoader extends GenLoaderJSON<Part> {
 
     public static final PartLoader INSTANCE = new PartLoader();
 
     @Override
-    public Value<Part> load(ParseMessageContainer log, SourceFileInfo info, JsonObject json) {
+    public Part load(ParseMessageContainer log, SourceFileInfo info, JsonObject json) {
         ParseContext ctx = ParseContext.wrap(log);
 
         if (json.has("scale")) {
@@ -21,8 +20,8 @@ public class PartLoader extends GenLoaderJSON<Value<Part>> {
     }
 
     @Override
-    protected Value<Part> getError() {
-        return Value.wrap(Part.EMPTY);
+    protected Part getError() {
+        return Part.EMPTY;
     }
 
     @Override

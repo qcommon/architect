@@ -44,9 +44,8 @@ public abstract class BaseModel implements UnbakedModel {
     protected void addModelTextures(Collection<Identifier> textures) {
         textures.add(TextureRef.PLACEHOLDER.texture);
 
-        model.getParts().getPossibleValues().parallelStream()
-            .flatMap(Collection::parallelStream)
-            .flatMap($ -> $.getFaces().parallelStream())
+        model.getParts(sp).parallelStream()
+            .flatMap($ -> $.getFaces(sp).parallelStream())
             .map(Face::getTexture)
             .map($ -> $.getTexture(tm))
             .forEach(textures::add);
@@ -71,8 +70,8 @@ public abstract class BaseModel implements UnbakedModel {
     }
 
     protected Map<Direction, List<BakedQuad>> getQuads(VertexFormat format, Function<TextureRef, Sprite> mapper) {
-        List<Quad> quadList = model.getParts().get(sp).parallelStream()
-            .flatMap($ -> $.getFaces().parallelStream())
+        List<Quad> quadList = model.getParts(sp).parallelStream()
+            .flatMap($ -> $.getFaces(sp).parallelStream())
             .flatMap($ -> $.toQuads().parallelStream())
             .collect(Collectors.toList());
 

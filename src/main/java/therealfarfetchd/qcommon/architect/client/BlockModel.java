@@ -8,7 +8,7 @@ import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.render.model.ModelRotationContainer;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.render.model.json.ModelItemPropertyOverrideList;
-import net.minecraft.client.render.model.json.ModelTransformations;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.util.Identifier;
@@ -50,9 +50,9 @@ public class BlockModel extends BaseModel {
         Function<TextureRef, Sprite> mapper = tr -> getTextureFixed.apply(tr.getTexture(tm));
         Sprite particle = getTextureFixed.apply(select(tm.getTexture("particle"), TextureRef.PLACEHOLDER.texture));
 
-        Map<Direction, List<BakedQuad>> quadsMap = getQuads(VertexFormats.field_1590, mapper);
+        Map<Direction, List<BakedQuad>> quadsMap = getQuads(VertexFormats.POSITION_COLOR_UV_NORMAL, mapper);
 
-        return new BasicBakedModel(quadsMap.get(null), quadsMap, true, true, particle, ModelTransformations.ORIGIN, ModelItemPropertyOverrideList.ORIGIN);
+        return new BasicBakedModel(quadsMap.get(null), quadsMap, true, true, particle, ModelTransformation.ORIGIN, ModelItemPropertyOverrideList.ORIGIN);
     }
 
 }

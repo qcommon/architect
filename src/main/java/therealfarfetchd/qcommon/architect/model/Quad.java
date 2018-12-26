@@ -40,6 +40,11 @@ public class Quad implements Face {
     }
 
     @Override
+    public Quad withTexture(TextureRef texture) {
+        return new Quad(texture, v0, v1, v2, v3, color);
+    }
+
+    @Override
     public Vec3 getNormal() {
         if (normal == null) {
             normal = toTris().get(0).getNormal();
@@ -60,6 +65,11 @@ public class Quad implements Face {
     @Override
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public Face withColor(Color color) {
+        return new Quad(texture, v0, v1, v2, v3, color);
     }
 
     @Override

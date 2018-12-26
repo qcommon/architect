@@ -13,11 +13,15 @@ public interface Face {
 
     TextureRef getTexture();
 
+    Face withTexture(TextureRef texture);
+
     Vec3 getNormal();
 
     Direction getFacing();
 
     Color getColor();
+
+    Face withColor(Color color);
 
     List<Quad> toQuads();
 

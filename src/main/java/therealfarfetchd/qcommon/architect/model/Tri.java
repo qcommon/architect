@@ -38,6 +38,11 @@ public class Tri implements Face {
     }
 
     @Override
+    public Tri withTexture(TextureRef texture) {
+        return new Tri(texture, v0, v1, v2, color);
+    }
+
+    @Override
     public Vec3 getNormal() {
         if (normal == null) {
             normal = v1.xyz.sub(v0.xyz).cross(v2.xyz.sub(v0.xyz)).getNormalized();
@@ -59,6 +64,11 @@ public class Tri implements Face {
     @Override
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public Face withColor(Color color) {
+        return new Tri(texture, v0, v1, v2, color);
     }
 
     @Override

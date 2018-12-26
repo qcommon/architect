@@ -53,11 +53,8 @@ public abstract class ModelLoaderBase implements CustomModelLoader {
     private Model getErrorModel() {
         if (errorModel == null) {
             final Identifier errorTex = new Identifier(Architect.MODID, "error");
-            Part box = new FactoryBox()
-                .parse(ParseContext.create("temp"), new JsonParser().parse("{\"faces\":{\"all\":{\"texture\":\"#error\"}}}").getAsJsonObject())
-                .getPossibleValues()
-                .iterator().next();
-            errorModel = new DefaultModel(Value.wrap(Collections.singletonList(box)), Value.wrap(key -> errorTex));
+            Part box = FactoryBox.INSTANCE.parse(ParseContext.create("temp"), new JsonParser().parse("{\"faces\":{\"all\":{\"texture\":\"#error\"}}}").getAsJsonObject());
+            errorModel = new DefaultModel(Collections.singletonList(box), Value.wrap(key -> errorTex));
         }
         return errorModel;
     }

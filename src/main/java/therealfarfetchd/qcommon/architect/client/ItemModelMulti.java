@@ -4,7 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelItemPropertyOverrideList;
-import net.minecraft.client.render.model.json.ModelTransformations;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -54,7 +54,7 @@ public class ItemModelMulti implements BakedModel {
     }
 
     @Override
-    public ModelTransformations getTransformations() {
+    public ModelTransformation getTransformations() {
         return models[0].getTransformations();
     }
 
