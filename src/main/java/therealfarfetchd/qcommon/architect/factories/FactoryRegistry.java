@@ -79,6 +79,7 @@ public class FactoryRegistry {
 
     private void readFactoryDefinitions(String modid) {
         Identifier id = new Identifier(modid, "render/_factories.json");
+        if (!Architect.proxy.resourceExists(id, false)) return;
         ParseMessageContainer ctx = new ParseMessageContainer(String.format("'%s' factories", modid));
         JsonObject obj = ModelLoader.INSTANCE.loadSource(ctx, id);
         if (ctx.isResultValid()) {
