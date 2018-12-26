@@ -5,6 +5,7 @@
   "mixins": [
     "MixinMinecraftClient",
     "MixinModelLoader",
+    "MixinWorld",
     "MixinWorldRenderer"
   ],
   "injectors": {
