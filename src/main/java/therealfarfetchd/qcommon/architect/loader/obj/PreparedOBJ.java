@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJFace;
 import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJMaterial;
+import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJMaterialImpl;
 import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJRoot;
 import therealfarfetchd.qcommon.architect.model.Vertex;
 import therealfarfetchd.qcommon.croco.Vec2;
@@ -34,7 +35,7 @@ public class PreparedOBJ {
     }
 
     private static PreparedFace process(OBJRoot data, OBJFace face) {
-        OBJMaterial mat = data.materials.getOrDefault(face.material, OBJMaterial.FALLBACK);
+        OBJMaterial mat = data.materials.getOrDefault(face.material, OBJMaterialImpl.FALLBACK);
         boolean[] noTex = {false};
         final List<Vertex> verts = face.vertices.parallelStream().map(vt -> {
             Vec3 xyz = accessIndexed(vt.xyz, data.vertPos);
@@ -50,7 +51,7 @@ public class PreparedOBJ {
         }).collect(Collectors.toList());
         if (noTex[0]) mat = mat.withDiffuseTexture(null);
 
-        return new PreparedFace(mat.diffuseTexture, new Color(mat.diffuse.getRed(), mat.diffuse.getGreen(), mat.diffuse.getBlue(), (int) (mat.transparency * 255f)), verts);
+        return new PreparedFace(mat.getDiffuseTexture(), new Color(mat.getDiffuse().getRed(), mat.getDiffuse().getGreen(), mat.getDiffuse().getBlue(), (int) (mat.getTransparency() * 255f)), verts);
     }
 
     public static PreparedOBJ get(OBJRoot data) {

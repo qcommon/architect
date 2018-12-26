@@ -1,58 +1,36 @@
 package therealfarfetchd.qcommon.architect.loader.obj.structs;
 
 import java.awt.Color;
-import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-public class OBJMaterial {
+public interface OBJMaterial {
 
-    public static final OBJMaterial FALLBACK = new OBJMaterial(Color.WHITE, 1.0f, null);
+    OBJMaterial FALLBACK = new OBJMaterialImpl(Color.WHITE, 1.0f, null);
 
-    public final Color diffuse;
-    public final float transparency;
-    @Nullable public final String diffuseTexture;
+    OBJMaterial withDiffuse(Color diffuse);
 
-    public OBJMaterial(Color diffuse, float transparency, @Nullable String diffuseTexture) {
-        this.diffuse = diffuse;
-        this.transparency = transparency;
-        this.diffuseTexture = diffuseTexture;
-    }
+    Color getDiffuse();
 
-    public OBJMaterial withDiffuse(Color diffuse) {
-        return new OBJMaterial(diffuse, transparency, diffuseTexture);
-    }
+    OBJMaterial withTransparency(float transparency);
 
-    public OBJMaterial withTransparency(float transparency) {
-        return new OBJMaterial(diffuse, transparency, diffuseTexture);
-    }
+    float getTransparency();
 
-    public OBJMaterial withDiffuseTexture(@Nullable String diffuseTexture) {
-        return new OBJMaterial(diffuse, transparency, diffuseTexture);
-    }
+    OBJMaterial withDiffuseTexture(@Nullable String diffuseTexture);
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OBJMaterial material = (OBJMaterial) o;
-        return Float.compare(material.transparency, transparency) == 0 &&
-            Objects.equals(diffuse, material.diffuse) &&
-            Objects.equals(diffuseTexture, material.diffuseTexture);
-    }
+    OBJMaterial.Mutable copy();
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(diffuse, transparency, diffuseTexture);
-    }
+    @Nullable
+    String getDiffuseTexture();
 
-    @Override
-    public String toString() {
-        return "OBJMaterial{" +
-            "diffuse=" + diffuse +
-            ", transparency=" + transparency +
-            ", diffuseTexture='" + diffuseTexture + '\'' +
-            '}';
+    interface Mutable extends OBJMaterial {
+
+        void setDiffuse(Color diffuse);
+
+        void setTransparency(float transparency);
+
+        void setDiffuseTexture(@Nullable String diffuseTexture);
+
     }
 
 }

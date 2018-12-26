@@ -39,6 +39,7 @@ public abstract class ModelLoaderBase implements CustomModelLoader {
 
     @Override
     public UnbakedModel loadModel(Identifier modelLocation) {
+        long start = System.nanoTime();
         Identifier model = getModelPath(modelLocation);
 
         Model m = models.computeIfAbsent(model, ModelLoader.INSTANCE::load);
@@ -47,7 +48,12 @@ public abstract class ModelLoaderBase implements CustomModelLoader {
             return createModel((ModelIdentifier) modelLocation, getErrorModel());
         }
 
-        return createModel((ModelIdentifier) modelLocation, m);
+        final UnbakedModel model1 = createModel((ModelIdentifier) modelLocation, m);
+
+        long duration = System.nanoTime() - start;
+        System.out.printf("Loading model '%s' took %dms.\n", modelLocation, duration / 1000000);
+
+        return model1;
     }
 
     private Model getErrorModel() {

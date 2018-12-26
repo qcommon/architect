@@ -25,11 +25,15 @@ public abstract class GenLoader<T, S> implements ResourceReloadListener {
 
     public T load(ParseMessageContainer log, Identifier id) {
         return cache.computeIfAbsent(id, id1 -> {
+            long start = System.nanoTime();
             S source = loadSource(log, id1);
 
             if (source == null) return getError();
 
-            return load(log, new SourceFileInfo(id1), source);
+            final T load = load(log, new SourceFileInfo(id1), source);
+            long duration = System.nanoTime() - start;
+            System.out.printf("Loading '%s' took %dms.\n", id, duration / 1000000);
+            return load;
         });
     }
 

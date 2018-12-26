@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
@@ -14,8 +13,6 @@ import therealfarfetchd.qcommon.architect.loader.GenLoader;
 import therealfarfetchd.qcommon.architect.loader.ParseMessageContainer;
 
 public abstract class OBJLoaderBase<T> extends GenLoader<T, List<String>> {
-
-    protected static final Pattern regex = Pattern.compile("\\s*#.*$");
 
     @Nullable
     @Override

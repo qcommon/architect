@@ -40,7 +40,8 @@ public class OBJLoader extends OBJLoaderBase<OBJRoot> {
         List<OBJFace> currentFaces = new ArrayList<>();
 
         for (String it : source) {
-            it = regex.matcher(it).replaceAll("").trim();
+            int comment = it.indexOf('#');
+            if (comment != -1) it = it.substring(0, comment).trim();
             if (it.isEmpty()) continue;
             final String[] s = it.split("\\s");
             if (s.length < 1) continue;
@@ -77,7 +78,7 @@ public class OBJLoader extends OBJLoaderBase<OBJRoot> {
                             vertPos.add(new Vec3(c.get(0), c.get(1), c.get(2)));
                             break;
                         case 4:
-                            final Float w = c.get(3);
+                            final float w = c.get(3);
                             vertPos.add(new Vec3(c.get(0) / w, c.get(1) / w, c.get(2) / w));
                             break;
                     }
@@ -94,7 +95,7 @@ public class OBJLoader extends OBJLoaderBase<OBJRoot> {
                     break;
                 }
                 case "f": {
-                    currentFaces.add(new OBJFace(activeMaterial, readCustom(it, 1, 3, -1).stream().map(OBJLoader::parseVertex).collect(Collectors.toList())));
+                    currentFaces.add(new OBJFace(activeMaterial, readCustom(it, 1, 3, -1).parallelStream().map(OBJLoader::parseVertex).collect(Collectors.toList())));
                     break;
                 }
                 default: {

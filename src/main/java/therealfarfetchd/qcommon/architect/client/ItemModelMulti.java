@@ -54,8 +54,8 @@ public class ItemModelMulti implements BakedModel {
     }
 
     @Override
-    public ModelTransformation getTransformations() {
-        return models[0].getTransformations();
+    public ModelTransformation getTransformation() {
+        return models[0].getTransformation();
     }
 
     @Override

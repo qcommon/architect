@@ -18,6 +18,7 @@ import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJMaterial;
 import therealfarfetchd.qcommon.architect.loader.obj.structs.OBJRoot;
 import therealfarfetchd.qcommon.architect.model.Vertex;
 import therealfarfetchd.qcommon.architect.model.part.Part;
+import therealfarfetchd.qcommon.architect.model.part.PartOBJ;
 import therealfarfetchd.qcommon.architect.model.value.Value;
 import therealfarfetchd.qcommon.croco.Vec2;
 import therealfarfetchd.qcommon.croco.Vec3;
@@ -53,7 +54,7 @@ public class OBJPartBuilder {
     }
 
     public Part build() {
-        return Part.EMPTY;
+        return new PartOBJ(materials);
     }
 
     public static OBJPartBuilder from(OBJRoot root) {
@@ -83,7 +84,7 @@ public class OBJPartBuilder {
         }).collect(Collectors.toList());
         if (noTex[0]) mat = mat.withDiffuseTexture(null);
 
-        return new PreparedFace(mat.diffuseTexture, new Color(mat.diffuse.getRed(), mat.diffuse.getGreen(), mat.diffuse.getBlue(), (int) (mat.transparency * 255f)), verts);
+        return new PreparedFace(mat.getDiffuseTexture(), new Color(mat.getDiffuse().getRed(), mat.getDiffuse().getGreen(), mat.getDiffuse().getBlue(), (int) (mat.getTransparency() * 255f)), verts);
     }
 
     public static void get(OBJRoot data) {
@@ -110,16 +111,16 @@ public class OBJPartBuilder {
 
     }
 
-    private static class MatDef {
+    public static class MatDef {
 
         public Value<Color> color;
         public Value<Optional<String>> tex;
         public Value<Float> alpha;
 
         public MatDef(OBJMaterial mat) {
-            this.color = Value.wrap(mat.diffuse);
-            this.tex = Value.wrap(Optional.ofNullable(mat.diffuseTexture));
-            this.alpha = Value.wrap(mat.transparency);
+            this.color = Value.wrap(mat.getDiffuse());
+            this.tex = Value.wrap(Optional.ofNullable(mat.getDiffuseTexture()));
+            this.alpha = Value.wrap(mat.getTransparency());
         }
 
     }
