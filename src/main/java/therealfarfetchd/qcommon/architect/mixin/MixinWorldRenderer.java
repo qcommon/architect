@@ -2,7 +2,7 @@ package therealfarfetchd.qcommon.architect.mixin;
 
 import net.minecraft.class_856;
 import net.minecraft.client.render.GuiLighting;
-import net.minecraft.client.render.Renderer;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -20,8 +20,8 @@ import therealfarfetchd.qcommon.architect.client.dynrender.DynRender;
 import therealfarfetchd.qcommon.architect.client.dynrender.DynRender.InputProvider;
 import therealfarfetchd.qcommon.architect.client.dynrender.DynRenderProvider;
 
-@Mixin(Renderer.class)
-public abstract class MixinRenderer {
+@Mixin(WorldRenderer.class)
+public abstract class MixinWorldRenderer {
 
     @Shadow
     private ClientWorld world;
