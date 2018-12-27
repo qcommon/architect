@@ -25,4 +25,8 @@ public interface TextureRef {
         }
     }
 
+    static TextureRefAbsolute fromIdentifier(Identifier id) {
+        return new TextureRefAbsolute(id);
+    }
+
 }

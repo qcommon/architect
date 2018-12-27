@@ -23,6 +23,7 @@ public class Tri implements Face {
 
     private Vec3 normal;
     private Direction facing;
+    private Tri flipped;
 
     public Tri(TextureRef texture, Vertex v0, Vertex v1, Vertex v2, Color color) {
         this.texture = texture;
@@ -87,6 +88,16 @@ public class Tri implements Face {
         }
 
         return tris;
+    }
+
+    @Override
+    public Tri flip() {
+        if (flipped == null) {
+            flipped = new Tri(texture, v2, v1, v0, color);
+            flipped.flipped = this;
+        }
+
+        return flipped;
     }
 
     @Override

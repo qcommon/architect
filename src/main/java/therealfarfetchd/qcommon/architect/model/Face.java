@@ -39,6 +39,8 @@ public interface Face {
         return transform(Mat4.IDENTITY.scale(scale.x, scale.y, scale.z));
     }
 
+    Face flip();
+
     Face transform(Mat4 mat);
 
 }

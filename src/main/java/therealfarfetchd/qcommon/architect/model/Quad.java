@@ -24,6 +24,7 @@ public class Quad implements Face {
     private List<Tri> tris;
     private Vec3 normal;
     private Direction facing;
+    private Quad flipped;
 
     public Quad(TextureRef texture, Vertex v0, Vertex v1, Vertex v2, Vertex v3, Color color) {
         this.texture = texture;
@@ -91,6 +92,16 @@ public class Quad implements Face {
         }
 
         return tris;
+    }
+
+    @Override
+    public Quad flip() {
+        if (flipped == null) {
+            flipped = new Quad(texture, v3, v2, v1, v0, color);
+            flipped.flipped = this;
+        }
+
+        return flipped;
     }
 
     @Override

@@ -11,7 +11,8 @@
     "minecraft:external": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryExternal",
     "minecraft:box": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryBox",
     "minecraft:text": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryText",
-    "minecraft:obj": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryOBJ"
+    "minecraft:obj": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryOBJ",
+    "minecraft:inflated-texture": "therealfarfetchd.qcommon.architect.factories.impl.part.FactoryInflatedTexture"
   },
   "models": {
     "minecraft:default": "therealfarfetchd.qcommon.architect.factories.impl.model.FactoryModelDefault",
