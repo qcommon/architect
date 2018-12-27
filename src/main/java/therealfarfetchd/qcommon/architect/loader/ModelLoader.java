@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 
 import therealfarfetchd.qcommon.architect.factories.FactoryRegistry;
 import therealfarfetchd.qcommon.architect.factories.ModelFactory;
+import therealfarfetchd.qcommon.architect.factories.impl.model.FactoryModelEmpty;
 import therealfarfetchd.qcommon.architect.model.Model;
 
 public class ModelLoader extends GenLoaderJSON<Model> {
@@ -27,28 +28,29 @@ public class ModelLoader extends GenLoaderJSON<Model> {
             Identifier id = ctx.dp.parseGenStringStatic(log, json, "parent", "a model location", s -> true, Identifier::new, fallback);
             if (id == fallback) return Model.EMPTY;
             Identifier fixed = new Identifier(id.getNamespace(), String.format("render/%s.json", id.getPath()));
+            JsonObject parentData = loadSource(ctx.log, fixed);
             Model parent = load(fixed);
-            return parent != null ? merge(log, info, json, parent) : Model.EMPTY;
+            if (parentData == null || parent == null) return Model.EMPTY;
+            return getFactory(ctx, parentData).merge(ctx, json, parent);
         }
 
+        return getFactory(ctx, json).parse(ctx, json);
+    }
+
+    private ModelFactory getFactory(ParseContext ctx, JsonObject root) {
         Identifier id = new Identifier("minecraft", "default");
-        if (json.has("type")) {
-            id = ctx.dp.parseGenStringStatic(ctx.log, json, "type", "a model type", s -> true, Identifier::new, id);
+        if (root.has("type")) {
+            id = ctx.dp.parseGenStringStatic(ctx.log, root, "type", "a model type", s -> true, Identifier::new, id);
         }
 
         ModelFactory mf = FactoryRegistry.INSTANCE.getModelFactory(id);
 
         if (mf == null) {
-            log.error(String.format("Invalid model type '%s'", id));
-            return Model.EMPTY;
+            ctx.log.error(String.format("Invalid model type '%s'", id));
+            return new FactoryModelEmpty();
         }
 
-        return mf.parse(ctx, json);
-    }
-
-    public Model merge(ParseMessageContainer log, SourceFileInfo info, JsonObject json, Model parent) {
-        // TODO
-        return parent;
+        return mf;
     }
 
     @Override

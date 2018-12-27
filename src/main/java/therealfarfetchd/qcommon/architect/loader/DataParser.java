@@ -79,6 +79,10 @@ public interface DataParser {
         return parseTextureRef(log, root, tag, TextureRef.PLACEHOLDER);
     }
 
+    default TextureRef parseTextureRefStatic(ParseMessageContainer log, JsonObject root, String tag) {
+        return parseTextureRefStatic(log, root, tag, TextureRef.PLACEHOLDER);
+    }
+
     Value<Mat4> parseMat4(ParseMessageContainer log, JsonObject root, String tag, Mat4 fallback);
 
     Mat4 parseMat4Static(ParseMessageContainer log, JsonObject root, String tag, Mat4 fallback);
@@ -116,6 +120,8 @@ public interface DataParser {
     Value<Boolean> parseBoolean(ParseMessageContainer log, JsonObject root, String tag, boolean fallback);
 
     Value<TextureRef> parseTextureRef(ParseMessageContainer log, JsonObject root, String tag, TextureRef fallback);
+
+    TextureRef parseTextureRefStatic(ParseMessageContainer log, JsonObject root, String tag, TextureRef fallback);
 
     Part parsePart(ParseMessageContainer log, JsonObject root, String tag);
 

@@ -7,11 +7,10 @@ import therealfarfetchd.qcommon.architect.model.part.Part;
 import therealfarfetchd.qcommon.architect.model.texref.TextureMapper;
 import therealfarfetchd.qcommon.architect.model.texref.TextureRef;
 import therealfarfetchd.qcommon.architect.model.value.StateProvider;
-import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public class EmptyModel implements Model {
 
-    public static final Value<TextureMapper> EMPTY_MAPPER = Value.wrap(unused -> TextureRef.PLACEHOLDER.texture);
+    public static final TextureMapper EMPTY_MAPPER = unused -> TextureRef.PLACEHOLDER.texture;
 
     @Override
     public List<Part> getParts(StateProvider sp) {
@@ -19,8 +18,18 @@ public class EmptyModel implements Model {
     }
 
     @Override
-    public Value<TextureMapper> getTextureMapper() {
+    public TextureMapper getTextureMapper() {
         return EMPTY_MAPPER;
+    }
+
+    @Override
+    public ModelTransformMap getModelTransforms() {
+        return ModelTransformMap.IDENTITY;
+    }
+
+    @Override
+    public Model withModelTransforms(ModelTransformMap map) {
+        return this;
     }
 
 }

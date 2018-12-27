@@ -38,7 +38,7 @@ public abstract class BaseModel implements UnbakedModel {
     public BaseModel(StateProvider sp, Model model) {
         this.sp = sp;
         this.model = model;
-        this.tm = model.getTextureMapper().get(sp);
+        this.tm = model.getTextureMapper();
     }
 
     protected void addModelTextures(Collection<Identifier> textures) {

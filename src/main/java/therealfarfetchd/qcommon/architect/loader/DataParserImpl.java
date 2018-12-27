@@ -150,6 +150,10 @@ public class DataParserImpl implements DataParser {
         return parseGenString(log, root, tag, "a texture name or #-key", $ -> true, TextureRef::fromString, fallback);
     }
 
+    public TextureRef parseTextureRefStatic(ParseMessageContainer log, JsonObject root, String tag, TextureRef fallback) {
+        return parseGenStringStatic(log, root, tag, "a texture name or #-key", $ -> true, TextureRef::fromString, fallback);
+    }
+
     public Part parsePart(ParseMessageContainer log, JsonObject root, String tag) {
         return parseGenObjectStatic(log, root, tag, "a part", $ -> true, obj -> parsePart(log, obj), Part.EMPTY);
     }

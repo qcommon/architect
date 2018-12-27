@@ -9,4 +9,6 @@ public interface ModelFactory {
 
     Model parse(ParseContext ctx, JsonObject json);
 
+    Model merge(ParseContext ctx, JsonObject json, Model parent);
+
 }

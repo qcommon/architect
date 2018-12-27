@@ -17,8 +17,8 @@ import therealfarfetchd.qcommon.architect.factories.impl.part.FactoryBox;
 import therealfarfetchd.qcommon.architect.loader.ModelLoader;
 import therealfarfetchd.qcommon.architect.loader.ParseContext;
 import therealfarfetchd.qcommon.architect.model.Model;
+import therealfarfetchd.qcommon.architect.model.ModelTransformMap;
 import therealfarfetchd.qcommon.architect.model.part.Part;
-import therealfarfetchd.qcommon.architect.model.value.Value;
 
 public abstract class ModelLoaderBase implements CustomModelLoader {
 
@@ -60,7 +60,7 @@ public abstract class ModelLoaderBase implements CustomModelLoader {
         if (errorModel == null) {
             final Identifier errorTex = new Identifier(Architect.MODID, "error");
             Part box = FactoryBox.INSTANCE.parse(ParseContext.create("temp"), new JsonParser().parse("{\"faces\":{\"all\":{\"texture\":\"#error\"}}}").getAsJsonObject());
-            errorModel = new DefaultModel(Collections.singletonList(box), Value.wrap(key -> errorTex));
+            errorModel = new DefaultModel(Collections.singletonList(box), key -> errorTex, ModelTransformMap.IDENTITY);
         }
         return errorModel;
     }

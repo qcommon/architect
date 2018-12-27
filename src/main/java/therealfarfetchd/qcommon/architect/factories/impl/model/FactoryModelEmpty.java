@@ -13,4 +13,9 @@ public class FactoryModelEmpty implements ModelFactory {
         return Model.EMPTY;
     }
 
+    @Override
+    public Model merge(ParseContext ctx, JsonObject json, Model parent) {
+        return Model.EMPTY;
+    }
+
 }
