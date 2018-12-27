@@ -20,6 +20,6 @@ dependencies {
   // Fabric API. This is technically optional, but you probably want it anyway.
   modCompile("net.fabricmc:fabric:0.1.2.64")
 
-  compile(files("qcommon-croco-1.0.3-dev.jar"))
+  compile(files("qcommon-croco-1.0.4-dev.jar"))
   compile("com.google.code.findbugs:jsr305:3.0.2")
 }
