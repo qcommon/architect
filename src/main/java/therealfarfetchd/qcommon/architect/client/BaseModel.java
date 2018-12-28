@@ -85,30 +85,30 @@ public abstract class BaseModel implements UnbakedModel {
         l.put(null, new ArrayList<>());
 
         for (Quad q : quads) {
-            q = snapToGrid(q);
+            Quad q1 = snapToGrid(q);
 
             BakedQuad baked = bake.apply(q);
 
             boolean isCullable = true;
-            Direction f = q.getFacing();
+            Direction f = q1.getFacing();
             Vec3 direction = Vec3.from(f.getVector());
             Vec3 filter = direction.mul(direction);
             Vec3 cmp = direction.add(filter).div(2);
 
             // check if the normal is the same as the facing direction
-            if (!direction.equals(q.getNormal())) isCullable = false;
+            if (!direction.equals(q1.getNormal())) isCullable = false;
 
             // check if all vertices are inside the block
-            if (isCullable && (q.v0.xyz.x < 0 || q.v0.xyz.x > 1 || q.v0.xyz.y < 0 || q.v0.xyz.y > 1 || q.v0.xyz.z < 0 || q.v0.xyz.z > 1)) isCullable = false;
-            if (isCullable && (q.v1.xyz.x < 0 || q.v1.xyz.x > 1 || q.v1.xyz.y < 0 || q.v1.xyz.y > 1 || q.v1.xyz.z < 0 || q.v1.xyz.z > 1)) isCullable = false;
-            if (isCullable && (q.v2.xyz.x < 0 || q.v2.xyz.x > 1 || q.v2.xyz.y < 0 || q.v2.xyz.y > 1 || q.v2.xyz.z < 0 || q.v2.xyz.z > 1)) isCullable = false;
-            if (isCullable && (q.v3.xyz.x < 0 || q.v3.xyz.x > 1 || q.v3.xyz.y < 0 || q.v3.xyz.y > 1 || q.v3.xyz.z < 0 || q.v3.xyz.z > 1)) isCullable = false;
+            if (isCullable && (q1.v0.xyz.x < 0 || q1.v0.xyz.x > 1 || q1.v0.xyz.y < 0 || q1.v0.xyz.y > 1 || q1.v0.xyz.z < 0 || q1.v0.xyz.z > 1)) isCullable = false;
+            if (isCullable && (q1.v1.xyz.x < 0 || q1.v1.xyz.x > 1 || q1.v1.xyz.y < 0 || q1.v1.xyz.y > 1 || q1.v1.xyz.z < 0 || q1.v1.xyz.z > 1)) isCullable = false;
+            if (isCullable && (q1.v2.xyz.x < 0 || q1.v2.xyz.x > 1 || q1.v2.xyz.y < 0 || q1.v2.xyz.y > 1 || q1.v2.xyz.z < 0 || q1.v2.xyz.z > 1)) isCullable = false;
+            if (isCullable && (q1.v3.xyz.x < 0 || q1.v3.xyz.x > 1 || q1.v3.xyz.y < 0 || q1.v3.xyz.y > 1 || q1.v3.xyz.z < 0 || q1.v3.xyz.z > 1)) isCullable = false;
 
             // check if all vertices are on the right face of the block
-            if (isCullable && !filter.mul(q.v0.xyz).equals(cmp)) isCullable = false;
-            if (isCullable && !filter.mul(q.v1.xyz).equals(cmp)) isCullable = false;
-            if (isCullable && !filter.mul(q.v2.xyz).equals(cmp)) isCullable = false;
-            if (isCullable && !filter.mul(q.v3.xyz).equals(cmp)) isCullable = false;
+            if (isCullable && !filter.mul(q1.v0.xyz).equals(cmp)) isCullable = false;
+            if (isCullable && !filter.mul(q1.v1.xyz).equals(cmp)) isCullable = false;
+            if (isCullable && !filter.mul(q1.v2.xyz).equals(cmp)) isCullable = false;
+            if (isCullable && !filter.mul(q1.v3.xyz).equals(cmp)) isCullable = false;
 
             if (isCullable) l.get(f).add(baked);
             else l.get(null).add(baked);
