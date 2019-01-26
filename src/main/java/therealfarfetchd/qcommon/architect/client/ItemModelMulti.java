@@ -77,7 +77,7 @@ public class ItemModelMulti implements BakedModel {
 
         @Nullable
         @Override
-        public BakedModel method_3495(BakedModel var1, ItemStack var2, @Nullable World var3, @Nullable LivingEntity var4) {
+        public BakedModel apply(BakedModel var1, ItemStack var2, @Nullable World var3, @Nullable LivingEntity var4) {
             final int i = mapper.applyAsInt(var2);
             if (i >= 0 && i < models.length) {
                 return models[i];

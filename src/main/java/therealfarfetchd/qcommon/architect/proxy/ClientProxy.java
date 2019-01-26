@@ -11,7 +11,8 @@ import java.io.InputStream;
 
 import javax.annotation.Nullable;
 
-import therealfarfetchd.qcommon.architect.client.CustomModelLoader;
+import therealfarfetchd.qcommon.architect.client.BlockModelLoader;
+import therealfarfetchd.qcommon.architect.client.ItemModelLoader;
 import therealfarfetchd.qcommon.architect.client.dynrender.DynModelLoader;
 
 public class ClientProxy extends CommonProxy {
@@ -30,10 +31,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerModelLoader() {
-        for (CustomModelLoader loader : CustomModelLoader.LOADERS) {
-            registerReloadListener(loader);
-        }
-
+        registerReloadListener(BlockModelLoader.INSTANCE);
+        registerReloadListener(ItemModelLoader.INSTANCE);
         registerReloadListener(DynModelLoader.INSTANCE);
     }
 

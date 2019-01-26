@@ -90,7 +90,7 @@ public class FactoryRegistry {
     }
 
     public void readFactoryDefinitions() {
-        FabricLoader.INSTANCE.getMods().forEach(mc -> readFactoryDefinitions(mc.getInfo().getId()));
+        FabricLoader.INSTANCE.getModContainers().forEach(mc -> readFactoryDefinitions(mc.getInfo().getId()));
     }
 
     private <T> void readDefinitionPart(ParseMessageContainer ctx, String modid, JsonObject json, String key, String typeSpec, Class<T> clazz, BiConsumer<Identifier, T> register) {
