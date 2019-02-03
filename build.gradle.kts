@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.VERSION_1_8
+
 plugins {
   id("fabric-loom") version "0.2.0-SNAPSHOT"
 }
@@ -8,6 +10,11 @@ base {
 
 group = "therealfarfetchd.qcommon.architect"
 version = "1.0.0"
+
+java {
+  sourceCompatibility = VERSION_1_8
+  targetCompatibility = VERSION_1_8
+}
 
 minecraft {
 }
