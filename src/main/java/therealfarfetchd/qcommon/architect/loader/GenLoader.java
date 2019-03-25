@@ -3,11 +3,14 @@ package therealfarfetchd.qcommon.architect.loader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.profiler.Profiler;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
 
@@ -74,8 +77,9 @@ public abstract class GenLoader<T, S> implements ResourceReloadListener {
     protected abstract S loadSourceFromStream(ParseMessageContainer log, InputStream stream);
 
     @Override
-    public void onResourceReload(ResourceManager var1) {
-        cache.clear();
+    public CompletableFuture<Void> apply(Helper var1, ResourceManager var2, Profiler var3, Profiler var4, Executor var5, Executor var6) {
+        var1.waitForAll(null);
+        return CompletableFuture.runAsync(() -> cache.clear());
     }
 
 }

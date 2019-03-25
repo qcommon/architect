@@ -2,7 +2,7 @@
   "id": "qcommon-architect",
   "name": "Architect",
   "description": "A universal model library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "LGPLv3",
   "side": "universal",
   "initializer": "therealfarfetchd.qcommon.architect.Architect",

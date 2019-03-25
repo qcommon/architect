@@ -5,10 +5,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
 
@@ -24,15 +27,18 @@ public class DynModelLoader implements ResourceReloadListener {
     private Map<Block, Model> rawModels = new HashMap<>();
 
     @Override
-    public void onResourceReload(ResourceManager rm) {
-        models.values().forEach(DynRender::destroy);
+    public CompletableFuture<Void> apply(Helper var1, ResourceManager var2, Profiler var3, Profiler var4, Executor var5, Executor var6) {
+        var1.waitForAll(null);
+        return CompletableFuture.runAsync(() -> {
+            models.values().forEach(DynRender::destroy);
 
-        models.clear();
-        rawModels.clear();
+            models.clear();
+            rawModels.clear();
 
-        for (Block block : Registry.BLOCK) {
-            tryLoadModel(block);
-        }
+            for (Block block : Registry.BLOCK) {
+                tryLoadModel(block);
+            }
+        });
     }
 
     private void tryLoadModel(Block block) {

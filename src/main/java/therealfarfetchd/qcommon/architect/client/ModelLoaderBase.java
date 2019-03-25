@@ -5,12 +5,15 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.profiler.Profiler;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.client.model.ModelVariantProvider;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
 
@@ -71,8 +74,9 @@ public abstract class ModelLoaderBase implements ModelVariantProvider, ResourceR
     protected abstract Identifier getModelPath(Identifier object);
 
     @Override
-    public void onResourceReload(ResourceManager var1) {
-        models.clear();
+    public CompletableFuture<Void> apply(Helper helper, ResourceManager resourceManager, Profiler profiler, Profiler profiler1, Executor executor, Executor executor1) {
+        helper.waitForAll(null);
+        return CompletableFuture.runAsync(() -> models.clear());
     }
 
 }

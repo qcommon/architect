@@ -45,7 +45,7 @@ public class ClientProxy extends CommonProxy {
         if (rm instanceof ReloadableResourceManager) {
             final ReloadableResourceManager rrm = (ReloadableResourceManager) rm;
 
-            rrm.addListener(listener);
+            rrm.registerListener(listener);
         }
     }
 

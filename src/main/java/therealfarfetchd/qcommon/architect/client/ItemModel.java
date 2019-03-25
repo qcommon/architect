@@ -55,11 +55,11 @@ public class ItemModel extends BaseModel {
 
         Map<Direction, List<BakedQuad>> quadsMap = getQuads(VertexFormats.POSITION_COLOR_UV_NORMAL, mapper);
 
-        return new BasicBakedModel(quadsMap.get(null), quadsMap, true, true, particle, from(model.getModelTransforms()), ModelItemPropertyOverrideList.ORIGIN);
+        return new BasicBakedModel(quadsMap.get(null), quadsMap, true, true, particle, from(model.getModelTransforms()), ModelItemPropertyOverrideList.EMPTY);
     }
 
     public static ModelTransformation from(ModelTransformMap mtm) {
-        if (mtm.equals(ModelTransformMap.IDENTITY)) return ModelTransformation.ORIGIN;
+        if (mtm.equals(ModelTransformMap.IDENTITY)) return ModelTransformation.NONE;
 
         return new ModelTransformation(
             from(mtm.thirdPersonLeftHand),

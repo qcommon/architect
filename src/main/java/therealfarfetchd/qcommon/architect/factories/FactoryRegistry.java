@@ -1,7 +1,7 @@
 package therealfarfetchd.qcommon.architect.factories;
 
 import net.minecraft.util.Identifier;
-import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -90,7 +90,7 @@ public class FactoryRegistry {
     }
 
     public void readFactoryDefinitions() {
-        FabricLoader.INSTANCE.getModContainers().forEach(mc -> readFactoryDefinitions(mc.getInfo().getId()));
+        FabricLoader.getInstance().getAllMods().forEach(mc -> readFactoryDefinitions(mc.getMetadata().getId()));
     }
 
     private <T> void readDefinitionPart(ParseMessageContainer ctx, String modid, JsonObject json, String key, String typeSpec, Class<T> clazz, BiConsumer<Identifier, T> register) {

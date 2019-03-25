@@ -52,7 +52,7 @@ public class BlockModel extends BaseModel {
 
         Map<Direction, List<BakedQuad>> quadsMap = getQuads(VertexFormats.POSITION_COLOR_UV_NORMAL, mapper);
 
-        return new BasicBakedModel(quadsMap.get(null), quadsMap, true, true, particle, ModelTransformation.ORIGIN, ModelItemPropertyOverrideList.ORIGIN);
+        return new BasicBakedModel(quadsMap.get(null), quadsMap, true, true, particle, ModelTransformation.NONE, ModelItemPropertyOverrideList.EMPTY);
     }
 
 }

@@ -2,7 +2,7 @@ package therealfarfetchd.qcommon.architect;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ public class Architect implements ModInitializer {
     public void onInitialize() {
 //        ShaderBuilder.test();
         INSTANCE = this;
-        switch (FabricLoader.INSTANCE.getEnvironmentHandler().getEnvironmentType()) {
+        switch (FabricLoader.getInstance().getEnvironmentType()) {
             case CLIENT:
                 proxy = new ClientProxy();
                 break;

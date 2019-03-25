@@ -6,6 +6,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction.AxisDirection;
+import net.minecraft.util.profiler.Profiler;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import javax.imageio.ImageIO;
 
@@ -197,10 +200,10 @@ public class PartInflatedTexture implements Part {
         }
 
         @Override
-        public void onResourceReload(ResourceManager var1) {
-            cache.clear();
+        public CompletableFuture<Void> apply(Helper var1, ResourceManager var2, Profiler var3, Profiler var4, Executor var5, Executor var6) {
+            var1.waitForAll(null);
+            return CompletableFuture.runAsync(() -> cache.clear());
         }
-
     }
 
     private enum QuadFacing {
